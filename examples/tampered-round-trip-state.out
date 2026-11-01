@@ -1,0 +1,5 @@
+one character changed: -32602 Invalid or expired requestState
+answer without state: input_required, the server asks again
+state with other arguments: -32602 Invalid or expired requestState
+honest retry: refund R-0111 requested
+same retry again: tool error, Error executing tool issue_refund: Refund R-0111 was already confirmed. Don't send the same answer again.

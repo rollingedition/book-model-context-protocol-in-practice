@@ -1,0 +1,6 @@
+honoured: shop://stock/KG-1018 and shop://stock/KG-9999
+before: north 2, south -6
+first event: shop://stock/KG-1018
+after: north 2, south 4
+events after re-listening: 0
+re-read: north 2, south 3

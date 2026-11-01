@@ -1,0 +1,7 @@
+client refuses: ValueError
+error code: -32022
+error message: Unsupported protocol version
+server supports: 2026-07-28
+client asked for: 2099-01-01
+retry with: 2026-07-28
+retry tools: get_order_status

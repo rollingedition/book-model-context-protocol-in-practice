@@ -1,0 +1,16 @@
+shop://policies/data-handling: priority 0.5
+shop://policies/escalation: priority 0.5
+shop://policies/refund: priority 1.0
+shop://policies/returns: priority 0.5
+shop://policies/shipping: priority 0.5
+shop://policies/stock: priority 0.5
+policies listed: 6
+refund policy priority: 1.0
+other policies' priority: 0.5
+attach at priority at least: 0.8
+tools the model sees: 6
+attached: shop://policies/refund
+ttl ms: 3600000
+system prompt, characters: 6239
+of which the policy: 1330
+resources/read sent to the server: 1

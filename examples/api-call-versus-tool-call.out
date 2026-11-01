@@ -1,0 +1,12 @@
+setup: one process, 127.0.0.1, HTTP/1.1, no TLS, bytes counted at a TCP relay, headers included
+api call round trips: 1
+api call bytes: 591
+mcp auto setup request count: 2
+mcp auto setup requests: server/discover, tools/list
+mcp auto setup bytes: 2157
+mcp pinned setup request count: 1
+mcp pinned setup requests: tools/list
+mcp pinned setup bytes: 1147
+mcp tool call round trips: 1
+mcp tool call bytes: 1357
+tool call bytes per api call byte: 2.3

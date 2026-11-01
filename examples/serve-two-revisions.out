@@ -1,0 +1,10 @@
+auto revision: 2026-07-28
+auto session header: none
+auto question came as: an input request in a result
+auto refund: requested
+legacy revision: 2025-11-25
+legacy session header: set
+2025 session on replica a: HTTP 200, tools listed
+2025 session on replica b: HTTP 404, Session not found
+legacy question came as: a request the server pushed mid-call
+legacy refund: requested

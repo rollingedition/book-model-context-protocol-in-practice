@@ -1,0 +1,6 @@
+release 1's tools/list cache hint: ttlMs 0
+client that listed before the release: Invalid structured content returned by tool check_stock: 'on_hand' is a required property
+client after listing again: result
+contract check: output warehouses[].on_hand: removed
+validator for release 1's schema: Draft202012Validator, as it declares no $schema
+release 2's result against release 1's schema: 'on_hand' is a required property

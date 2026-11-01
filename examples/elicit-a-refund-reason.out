@@ -1,0 +1,6 @@
+accept: Recorded: damaged in transit, restock False.
+decline: The user declined: don't record this return, and don't ask again.
+cancel: The user closed the form without answering: ask again later.
+form fields: reason, restock, note
+required: reason, restock
+client without elicitation: -32021

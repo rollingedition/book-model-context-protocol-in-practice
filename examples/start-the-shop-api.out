@@ -1,0 +1,11 @@
+seed: 4217
+customers: 240
+products: 64
+orders: 1500
+tickets: 48
+with key: 200
+order status: shipped
+shipped on: 2026-06-24
+total: 99.00
+without key: 401
+unknown order: 404

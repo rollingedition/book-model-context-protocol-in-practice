@@ -1,0 +1,10 @@
+client_id: https://support.fernhill.example/oauth/client.json
+redirect_uris: http://localhost:4280/callback
+token_endpoint_auth_method: none
+document as published: accepted
+document with a secret: document carries a shared secret
+document another client_id: document client_id differs from its URL
+document on http: client_id must be an https URL with a path
+SDK given an http client ID: ValueError
+client_id sent: https://support.fernhill.example/oauth/client.json
+without metadata document support: Registration failed: 404 Not Found

@@ -1,0 +1,6 @@
+endpoint host: 127.0.0.1
+endpoint path: /mcp
+protocol revision: 2026-07-28
+server: shop-support 0.6.0
+tools: 5
+O-1873 status: delivered

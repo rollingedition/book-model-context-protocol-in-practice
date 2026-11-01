@@ -1,0 +1,13 @@
+O-1873 status: delivered
+authorization request: response_type, client_id, redirect_uri, state, code_challenge, code_challenge_method, resource, scope
+code_challenge_method: S256
+challenge is S256 of the verifier: True
+same resource in both requests: True
+token aud as expected: True
+token iss as expected: True
+token sub: staff-0007
+token scope: orders:read stock:read
+refresh token: None
+code sent twice: 400 invalid_grant
+wrong verifier: invalid_grant
+plain method: invalid_request / PKCE with S256 is required

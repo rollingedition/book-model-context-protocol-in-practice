@@ -1,0 +1,7 @@
+chapter 3, find_orders lists orders of: C-0116
+chapter 3, quote_refund on O-1190: 109.00
+chapter 3, issue_refund: requested
+chapter 3, C-0127 spends C-0116's quote: requested
+token's subject, find_orders lists orders of: C-0127
+token's subject, quote_refund on O-1190: refused (The shop has no order O-1190)
+token's subject, C-0127 spends C-0116's quote: refused (There is no quote Q-...)

@@ -1,0 +1,14 @@
+protocol revision: 2026-07-28
+resources: 6
+  shop://policies/data-handling  'Data-handling policy'  priority 0.5
+  shop://policies/escalation  'Escalation policy'  priority 0.5
+  shop://policies/refund  'Refund policy'  priority 1.0
+  shop://policies/returns  'Returns policy'  priority 0.5
+  shop://policies/shipping  'Shipping policy'  priority 0.5
+  shop://policies/stock  'Stock policy'  priority 0.5
+list cache scope: public
+list ttl ms: 3600000
+mime type: text/markdown
+first line: # Refund policy
+read cache scope: public
+read ttl ms: 3600000

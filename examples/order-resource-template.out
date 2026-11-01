@@ -1,0 +1,12 @@
+template: shop://orders/{order_id}
+O-2476 status: shipped
+read cache scope: private
+unknown order code: -32602
+unknown order says: The shop has no order O-7144.
+unknown order data uri: shop://orders/O-7144
+malformed code: -32602
+malformed says: Order IDs look like O-1873, not '2476'.
+malformed data uri: shop://orders/2476
+traversal code: -32602
+traversal says: Unknown resource: shop://orders/..%2F..%2Frefunds
+traversal data uri: shop://orders/..%2F..%2Frefunds

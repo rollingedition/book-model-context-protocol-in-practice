@@ -1,0 +1,3 @@
+session-keyed issue_refund: Error executing tool issue_refund: There is no open quote in this session. Call quote_refund first.
+session objects in two calls: 2
+handle issue_refund: requested 23.98

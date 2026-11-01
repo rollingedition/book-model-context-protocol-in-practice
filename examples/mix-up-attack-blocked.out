@@ -1,0 +1,10 @@
+shop sends iss, host stopped: OAuthFlowError Authorization response iss mismatch
+shop sends iss, user consented at the shop's server: True
+shop sends iss, iss in the answer: shop's
+shop sends iss, codes the attacker received: 0
+shop omits iss, host stopped: OAuthTokenError Token exchange failed (400)
+shop omits iss, user consented at the shop's server: True
+shop omits iss, iss in the answer: none
+shop omits iss, codes the attacker received: 1
+shop omits iss, attacker's token is for the shop's server: True
+shop omits iss, attacker's token scope: orders:read stock:read refunds:write

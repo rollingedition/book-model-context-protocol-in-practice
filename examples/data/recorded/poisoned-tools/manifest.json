@@ -1,0 +1,67 @@
+{
+  "script": "recordings/poisoned_tools.py",
+  "model": "Qwen/Qwen3-4B-Instruct-2507",
+  "model_version": "unsloth/Qwen3-4B-Instruct-2507-GGUF@a06e946bb6b655725eafa393f4a9745d460374c9 Qwen3-4B-Instruct-2507-Q4_K_M.gguf sha256:3605803b982cb64aead44f6c1b2ae36e3acdb41d8e46c8a94c6533bc4c67e597",
+  "quantization": "Q4_K_M",
+  "runner": "llama-cpp-python 0.3.36, CPU, 4 threads",
+  "sampling": {
+    "temperature": 0.7,
+    "top_p": 0.8,
+    "top_k": 20,
+    "min_p": 0.0,
+    "max_tokens": 256,
+    "seed": 4217
+  },
+  "licence": "Apache-2.0",
+  "prompt_sha256": "7b1d1b87c738c7f77d509dba8aa0f14c27e381399039fe2cb85f053761fd898b",
+  "definitions_sha256": {
+    "clean": "4d436e8c755b0895f8229dcab0addb827beffb20d906715686c95b2656972c77",
+    "poisoned": "9e5cfc2bb59ec3ff6e996d41c2bf9389ead86d88279558219a148afb60c17eca"
+  },
+  "created": "2026-10-31",
+  "outputs": [
+    "replies.jsonl"
+  ],
+  "batches": [
+    {
+      "batch": "partner",
+      "created": "2026-10-31",
+      "calls": 6
+    },
+    {
+      "batch": "injected",
+      "created": "2026-10-31",
+      "calls": 6
+    }
+  ],
+  "tickets": {
+    "partner": [
+      "T-0003",
+      "T-0006",
+      "T-0016"
+    ],
+    "injected": [
+      "T-0008",
+      "T-0030",
+      "T-0037",
+      "T-0040",
+      "T-0041",
+      "T-0046"
+    ]
+  },
+  "calls": 12,
+  "seconds_per_call": [
+    26.6,
+    12.5,
+    11.7,
+    11.9,
+    7.5,
+    10.5,
+    50.7,
+    12.3,
+    40.1,
+    10.0,
+    7.9,
+    9.8
+  ]
+}

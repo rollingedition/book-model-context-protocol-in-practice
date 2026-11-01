@@ -1,0 +1,16 @@
+# Spoken descriptions for chapter 1, MCP end to end: what each example does and what its output shows.
+
+[examples.start-the-shop-api]
+say = "The code generates the shop's data from seed {{out:start-the-shop-api:seed}}: {{out:start-the-shop-api:customers}} customers, {{out:start-the-shop-api:products}} products, {{out:start-the-shop-api:orders}} orders and {{out:start-the-shop-api:tickets}} tickets. It starts the shop's API on loopback and asks it for order O-2476 three ways. With the API key the answer is {{out:start-the-shop-api:with key}}, and the order is {{out:start-the-shop-api:order status}}, with a total of {{out:start-the-shop-api:total}}. Without the key the answer is {{out:start-the-shop-api:without key}}, and for an order that doesn't exist, {{out:start-the-shop-api:unknown order}}."
+
+[examples.order-status-server]
+say = "The code defines an MCP server named shop-orders with one tool, get order status, a Python function that calls the shop's API for one order with the key from its environment, and raises a tool error when the order doesn't exist. Run without arguments, the file starts a client that launches the same file as a server over standard I O and lists its tools. The output shows the tool's name, its description, which is the function's docstring, and an input schema that requires one string, the order ID."
+
+[examples.call-order-status]
+say = "The code starts the shop's API, launches the server over standard I O with the API's address and key in its environment, and calls get order status three times. The client and server agree on revision {{out:call-order-status:protocol revision}}. The call for order O-2476 succeeds, and the order is {{out:call-order-status:order status}}. The call for O-7144 comes back as a failed tool result, whose text says the shop has no such order and what order IDs look like. A second client that launches the server without the environment gets only a generic message: {{out:call-order-status:without env says}}."
+
+[examples.trace-first-call]
+say = "The code launches the server behind a relay that logs every line on the wire, makes one tool call for order O-2476, and prints the log. The trace has {{out:trace-first-call:messages}} messages: three requests and their results, with the methods server discover, tools list and tools call, and no initialize. The first request and the tool call are printed in full, and each carries the protocol version, the client's name and its capabilities in its meta field. Every result says its result type is complete, and the call's result carries the server's name and version."
+
+[examples.host-picks-a-tool]
+say = "The code lists the server's tools, gives the book's host loop three tickets, and replays the model's recorded reply for each, then calls the tool the model chose. For ticket T-0003, the model chose {{out:host-picks-a-tool:T-0003 tool}} for order {{out:host-picks-a-tool:T-0003 order id}}, which is {{out:host-picks-a-tool:T-0003 order status}}. For T-0010, which wrote only a bare number, it chose the same tool for order {{out:host-picks-a-tool:T-0010 order id}}. For T-0015, a stock question, it called no tool and said in words that it couldn't check stock."

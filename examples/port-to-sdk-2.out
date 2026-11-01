@@ -1,0 +1,7 @@
+import FastMCP: This is mcp 2.x, where FastMCP was renamed to MCPServer (from mcp.server.mcpserver import MCPServer) and other APIs changed
+import McpError: cannot import name 'McpError' from 'mcp.shared.exceptions'
+port on the constructor: MCPServer.__init__() got an unexpected keyword argument 'port'
+as written title: Answers the support team's questions about orders, refunds and stock.
+as written instructions: None
+ported title: None
+ported instructions: Answers the support team's questions about orders, refunds and stock.

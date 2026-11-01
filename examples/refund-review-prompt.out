@@ -1,0 +1,5 @@
+message 1: user resource
+message 2: user text
+path as order_id: -32602 No order '../refunds'. Order IDs look like O-1873.
+missing amount: -32603 Internal server error
+unknown prompt: -32603 Internal server error

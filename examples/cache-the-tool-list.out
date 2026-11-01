@@ -1,0 +1,5 @@
+shop-orders hint: ttlMs 0, cacheScope private
+shop-orders tools/list sent for two calls: 2
+shop-support hint: ttlMs 300000, cacheScope public
+shop-support tools/list sent for two calls: 1
+shop-support tools/list sent when the second call bypasses: 2

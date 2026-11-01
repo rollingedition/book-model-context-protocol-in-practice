@@ -1,0 +1,11 @@
+T-0003 asks: Can you tell me when O-1942 will arrive. I need it before the weekend
+T-0003 tool: get_order_status
+T-0003 order id: O-1942
+T-0003 order status: shipped
+T-0010 asks: where is my order 2496? its been ages and the tracking page says nothing
+T-0010 tool: get_order_status
+T-0010 order id: O-2496
+T-0010 order status: shipped
+T-0015 asks: Do you have enamelled casserole in stock? I'd want two of them
+T-0015 tool: none
+T-0015 reply: I don't have access to real-time inventory or stock levels for Fernhill …

@@ -1,0 +1,7 @@
+partner's token aud: https://partner.example/mcp
+partner forwards its token, shop's server answers: 401
+challenge error: invalid_token
+host sends a token for the shop's server: shipped
+requests that reached the shop's API: 2
+shop's API saw an Authorization header: False
+shop's API saw the server's own key: True

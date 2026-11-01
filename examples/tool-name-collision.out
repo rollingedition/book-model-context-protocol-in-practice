@@ -1,0 +1,5 @@
+ClientSessionGroup: {'get_order_status'} already exist in group tools.
+tools the model sees: 7
+shop.get_order_status routes to: ('shop', 'get_order_status')
+partner.get_order_status routes to: ('partner', 'get_order_status')
+get_order_status routes to: None

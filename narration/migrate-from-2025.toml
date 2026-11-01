@@ -1,0 +1,30 @@
+# Spoken descriptions for chapter 12, Migrate a 2025-era server: what each example does and what its output shows,
+# and what the chapter's two listings of 2025-era code contain.
+
+[[blocks]]
+section = "migrate-from-2025"
+starts = '"""shop-support as a 2025-era team'
+say = "A listing of the shop's server as a 2025-era team wrote it for S D K one point x. It builds the server with Fast M C P, passing the instructions as the second argument and the port and session setting to the constructor, and keeps each connection's open quote in a dictionary keyed by the connection's session. It has four tools. Quote refund stores the quote under the session and logs a line to the client. Issue refund takes no argument, refunds the quote that connection made last, and, above the policy limit, pushes a confirmation to the user mid-call with elicit. Triage ticket asks the client's model, through sampling, which tool a ticket needs. Save restock report asks the client for its roots and writes to the first one. The last line serves the H T T P plus S S E transport when an environment variable asks for old hosts, and Streamable HTTP otherwise."
+
+[examples.scan-a-2025-server]
+say = "The code parses the 2025-era server and the host's OAuth setup as text, never running them, matches every part of the code against a list of rules, and prints each dependency it finds with the functions it sits in and its replacement, grouped by status. It finds {{out:scan-a-2025-server:removed dependencies}} removed dependencies, sessions and the requests that three tools push mid-call, the confirmation, the sampling request and the request for roots; {{out:scan-a-2025-server:deprecated dependencies}} deprecated ones, sampling, roots, logging, the H T T P plus S S E transport and dynamic client registration; and {{out:scan-a-2025-server:sdk dependencies}} S D K changes. Four of the deprecated features share one earliest removal, the {{out:scan-a-2025-server:sampling earliest removal}}, and the H T T P plus S S E transport's is {{out:scan-a-2025-server:HTTP+SSE transport earliest removal}}."
+
+[examples.stateless-after-migration]
+say = "The code ports the 2025 server's quote refund and issue refund to S D K two point x unchanged, still keeping the quote under the request's session, and calls each once from one client at the pinned revision. Issue refund fails: {{out:stateless-after-migration:session-keyed issue_refund}} The two calls saw {{out:stateless-after-migration:session objects in two calls}} different session objects. Then it uses chapter 3's server, where issue refund takes the quote I D that quote refund returned, and the refund goes through: {{out:stateless-after-migration:handle issue_refund}}."
+
+[examples.replace-pushed-requests]
+say = "The code ports issue refund so that a resolver asks for the confirmation before the tool runs, and only when the shop's API holds the refund, and so that the tool's log line goes to Python's logging instead of the client. It quotes a refund for order O twenty-two eighty-nine, which is above the policy limit, and calls issue refund once by hand: the first round is {{out:replace-pushed-requests:first round}}, asking with {{out:replace-pushed-requests:first round asks}}. Then the client runs the rounds with a scripted lead who says yes, and the refund's status becomes {{out:replace-pushed-requests:refund after the lead's yes}}."
+
+[examples.roots-to-a-parameter]
+say = "The code defines save restock report with the export folder as a parameter, resolves the path, and refuses any folder that isn't in the server's configured list, which is exports. Saving to exports works: {{out:roots-to-a-parameter:export to exports}} Saving to exports, then dot dot, then private, is refused: {{out:roots-to-a-parameter:export to exports/../private}}"
+
+[[blocks]]
+section = "replace-dynamic-registration"
+starts = "\"\"\"How the support team's 2025 host got"
+say = "A listing of how the support team's 2025 host set up OAuth with S D K one point x: an OAuth client provider for the shop's server, given the host's name and a loopback redirect address as client metadata, with a token store and handlers for the browser and the returned code. It passes no client metadata U R L, so it registers itself with each authorization server."
+
+[examples.port-to-sdk-2]
+say = "The code tries the 2025 server's setup lines on S D K two point x. Importing Fast M C P fails with: {{out:port-to-sdk-2:import FastMCP}}. Importing the old error class fails with: {{out:port-to-sdk-2:import McpError}}. Passing the port to the constructor fails with: {{out:port-to-sdk-2:port on the constructor}}. Then it builds the server with the instructions as the second argument, as one point x took them, and a client sees the title {{out:port-to-sdk-2:as written title}} and the instructions {{out:port-to-sdk-2:as written instructions}}. Built with the instructions by keyword, the title is {{out:port-to-sdk-2:ported title}} and the instructions arrive."
+
+[examples.serve-two-revisions]
+say = "The code serves the ported server's app as replica a, recording every H T T P exchange, and a second copy as replica b. A client in the default mode and a client in legacy mode each quote a refund above the policy limit and issue it on replica a, with a scripted lead saying yes. The default client settles on {{out:serve-two-revisions:auto revision}}, gets session header {{out:serve-two-revisions:auto session header}}, and its question comes as {{out:serve-two-revisions:auto question came as}}. The legacy client settles on {{out:serve-two-revisions:legacy revision}}, gets session header {{out:serve-two-revisions:legacy session header}}, and its question comes as {{out:serve-two-revisions:legacy question came as}}. The default client's refund ends {{out:serve-two-revisions:auto refund}}, and the legacy client's ends {{out:serve-two-revisions:legacy refund}}. The 2025 client's session I D works on replica a, which answers with status {{out:serve-two-revisions:2025 session on replica a}}, and fails on replica b, which answers with status {{out:serve-two-revisions:2025 session on replica b}}."

@@ -1,0 +1,5 @@
+test_order_status_fields: passed
+test_unknown_order_is_a_tool_error: passed
+test_malformed_order_id_is_refused: passed
+test_http_refuses_a_mismatched_header: passed
+tests passed: 4 of 4

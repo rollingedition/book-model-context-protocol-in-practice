@@ -1,0 +1,4 @@
+protocol revision: 2026-07-28
+error code: -32600
+error message: Cannot send 'elicitation/create': this transport context has no back-channel for server-initiated requests.
+questions the user saw: 0

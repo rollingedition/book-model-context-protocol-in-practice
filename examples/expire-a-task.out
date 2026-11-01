@@ -1,0 +1,7 @@
+first, ttl ms: 60000
+first, first poll: working
+first, 61 s later: -32602 Failed to retrieve task: Task has expired
+second, before cancel: working, recounted 1 of 64 SKUs
+cancel acknowledged, besides _meta: resultType complete
+second, right after: working
+second, finally: cancelled, stopped after 2 of 64 SKUs

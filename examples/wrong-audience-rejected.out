@@ -1,0 +1,9 @@
+SDK default, own token: 200
+SDK default, partner's token: 200
+SDK default, warnings: MCPDeprecationWarning
+validate_token_resource=True, own token: 200
+validate_token_resource=True, partner's token: 401
+validate_token_resource=True, warnings: none
+verifier checks aud, own token: 200
+verifier checks aud, partner's token: 401
+verifier checks aud, warnings: none

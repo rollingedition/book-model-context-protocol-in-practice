@@ -1,0 +1,93 @@
+{
+  "tokenizer": "Qwen/Qwen3-4B-Instruct-2507",
+  "context": 4096,
+  "prompt_without_tools": 136,
+  "vague": {
+    "find_orders": {
+      "tokens": 198,
+      "sha256": "d8a30917b2e46672e33885cb211e6700136696c0edfd8e959a35faa97b5802bc"
+    },
+    "get_order_status": {
+      "tokens": 78,
+      "sha256": "c44446c83c41e0ba99348c337ca0b836fd5363f933e6f7a749c50ba06d124cbc"
+    },
+    "quote_refund": {
+      "tokens": 184,
+      "sha256": "a2adc7180757fbe33446fca13fdcbda44b8c0804bd6ddf3af130508ec8490d67"
+    },
+    "issue_refund": {
+      "tokens": 87,
+      "sha256": "1d18f92d07567338805509e89c1a711343efa082b13672d21ae7562c9268f99b"
+    },
+    "check_stock": {
+      "tokens": 73,
+      "sha256": "89f05259f9b3d419f184f525c05aadbbbf438d88495d041e370b8f6e4696d5be"
+    }
+  },
+  "draft": {
+    "find_orders": {
+      "tokens": 264,
+      "sha256": "a615740247628b403fa5e8786cb47ba86b38df8b24938ed5668bb7d7b2756577"
+    },
+    "get_order_status": {
+      "tokens": 140,
+      "sha256": "a612c688fdf07fb97013407dd6b5d2ac94cd12329fffe9c84940cd1c6e53a316"
+    },
+    "quote_refund": {
+      "tokens": 266,
+      "sha256": "a49933ba8dc1ceadad0bd5b84094fa27781a7e194faa29d066bbb0437255e540"
+    },
+    "issue_refund": {
+      "tokens": 153,
+      "sha256": "cb2a0c9b72b905dfcccf20e6788773cee1b56d814702df77ee9097afa4b7fb3d"
+    },
+    "check_stock": {
+      "tokens": 131,
+      "sha256": "4be481ed9c72edb41c995be149c675c374728355f62a92582a3b01e0bb983d88"
+    }
+  },
+  "revised": {
+    "find_orders": {
+      "tokens": 260,
+      "sha256": "00cd5273d4e44473ffc398a7c48c4884e58d4a986ead796bf59c5566911f517f"
+    },
+    "get_order_status": {
+      "tokens": 163,
+      "sha256": "20d72e602e41138656441c62cd5f3c179f1483314bd9839a607d5323d7102474"
+    },
+    "quote_refund": {
+      "tokens": 271,
+      "sha256": "2ebd1701f3c95493812ecbafe941b8772e9da8e28b25fdfb7ff9c96998742798"
+    },
+    "issue_refund": {
+      "tokens": 149,
+      "sha256": "908f36ff56bfb7dc4ec3e415a17663241e131e5c6809b99d4ea0caabf6c48d42"
+    },
+    "check_stock": {
+      "tokens": 127,
+      "sha256": "bb234faa6dffe08305228fb882704a78c554470fcc76848158929b42ebad7796"
+    }
+  },
+  "endpoint": {
+    "get_orders": {
+      "tokens": 63,
+      "sha256": "e2f856358151391fe3c5018bc12588de5f3e88ebe36920d8d193a7bfea4968f2"
+    },
+    "get_orders_by_order_id": {
+      "tokens": 49,
+      "sha256": "fb85d26d8dd9e6a643c9009d9ec4e08679240ae97f2a1db7df4d581fe36bda9e"
+    },
+    "get_stock_by_sku": {
+      "tokens": 48,
+      "sha256": "2a5065ab05d84cc40c182479e7548ae14f6564623d42a519fe9ecde5479121c1"
+    },
+    "post_refunds": {
+      "tokens": 68,
+      "sha256": "1255a266f525ae64c02929dc64197261c6681883f19b2e478e8d79d22c126c6e"
+    },
+    "post_stock_by_sku_recount": {
+      "tokens": 60,
+      "sha256": "232defe6cb25eff1a6ddd6aec190b194afd0c6d98cf5740255368515d7502372"
+    }
+  }
+}

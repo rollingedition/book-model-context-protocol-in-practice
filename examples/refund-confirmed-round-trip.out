@@ -1,0 +1,7 @@
+by hand: R-0111 requested
+user was asked: Refund 343.49 on order O-1145? It is above the policy limit, so a lead must confirm it.
+by Client.call_tool: R-0112 requested
+by hand, call: id 4, sends arguments only, gets input_required
+by hand, retry: id 5, sends inputResponses and requestState, gets complete
+Client.call_tool, call: id 7, sends arguments only, gets input_required
+Client.call_tool, retry: id 8, sends inputResponses and requestState, gets complete

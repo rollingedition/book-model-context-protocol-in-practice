@@ -1,0 +1,4 @@
+first call: input_required url
+url: https://pay.fernhill.example/connect/…
+after accept: input_required url
+after sign-in: complete Paid R-0111 through the payment provider

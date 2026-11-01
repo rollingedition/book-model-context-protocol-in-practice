@@ -1,0 +1,13 @@
+hide_tools=False, tools listed: find_orders, get_order_status, quote_refund, issue_refund, check_stock
+hide_tools=True, tools listed: find_orders, get_order_status, quote_refund, check_stock
+tools/list cacheScope: private
+get_order_status: 200
+issue_refund: 403
+challenge: Bearer error="insufficient_scope", scope="refunds:write"
+challenge has resource_metadata: True
+issue_refund named get_order_status in Mcp-Name: 400 -32020
+issue_refund with Mcp-Name in base64: 403
+issue_refund at 2025-11-25: 403
+issue_refund with two Authorization headers: 400 invalid_request
+prompts/get, which no scope maps: 403
+issue_refund with a lead token: 200 True

@@ -1,0 +1,3 @@
+tool: get_order_status
+description: Look up one of the shop's orders by its ID, such as O-1873: its status, dates, lines and total.
+input schema: {"type": "object", "properties": {"order_id": {"title": "Order Id", "type": "string"}}, "required": ["order_id"], "title": "get_order_statusArguments"}

@@ -1,0 +1,7 @@
+server: shop-support 0.2.0
+protocol revision: 2026-07-28
+supported versions: 2026-07-28
+capabilities: prompts, resources, tools
+tools: get_order_status
+resources: shop://policies/refund
+prompts: review_refund

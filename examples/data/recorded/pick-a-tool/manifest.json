@@ -1,0 +1,32 @@
+{
+  "script": "recordings/pick_a_tool.py",
+  "model": "Qwen/Qwen3-4B-Instruct-2507",
+  "model_version": "unsloth/Qwen3-4B-Instruct-2507-GGUF@a06e946bb6b655725eafa393f4a9745d460374c9 Qwen3-4B-Instruct-2507-Q4_K_M.gguf sha256:3605803b982cb64aead44f6c1b2ae36e3acdb41d8e46c8a94c6533bc4c67e597",
+  "quantization": "Q4_K_M",
+  "runner": "llama-cpp-python 0.3.36, CPU, 4 threads",
+  "sampling": {
+    "temperature": 0.7,
+    "top_p": 0.8,
+    "top_k": 20,
+    "min_p": 0.0,
+    "max_tokens": 256,
+    "seed": 4217
+  },
+  "licence": "Apache-2.0",
+  "prompt_sha256": "7b1d1b87c738c7f77d509dba8aa0f14c27e381399039fe2cb85f053761fd898b",
+  "created": "2026-10-31",
+  "outputs": [
+    "replies.jsonl"
+  ],
+  "tickets": [
+    "T-0003",
+    "T-0010",
+    "T-0015"
+  ],
+  "calls": 3,
+  "seconds_per_call": [
+    7.4,
+    4.3,
+    9.9
+  ]
+}

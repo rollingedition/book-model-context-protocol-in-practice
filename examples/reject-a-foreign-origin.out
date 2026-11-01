@@ -1,0 +1,6 @@
+no Origin: 200 tools listed
+own Origin: 200 tools listed
+foreign Origin: 403 Invalid Origin header
+foreign Host: 421 Invalid Host header
+0.0.0.0 app, foreign Origin: 200 tools listed
+0.0.0.0 app, foreign Host: 200 tools listed

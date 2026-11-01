@@ -1,0 +1,9 @@
+tickets replayed: 48
+T-0009 tools: shop.quote_refund then shop.find_orders
+refunds issued: 0
+replies that promise a refund: 11
+of which no call made: 11
+issue_refund tickets flagged: 6 of 7
+quote_refund tickets flagged: 5 of 9
+flagged: T-0007, T-0020, T-0029, T-0034, T-0036, T-0037, T-0040, T-0042, T-0045, T-0046, T-0048
+after rewording quote_refund, T-0001 replays: no, RecordingMismatch

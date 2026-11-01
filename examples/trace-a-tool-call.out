@@ -1,0 +1,11 @@
+HTTP spans: MCP send server/discover, MCP send tools/call find_orders, MCP send tools/call quote_refund, MCP send tools/list, server/discover, tools/call find_orders, tools/call quote_refund, tools/list
+HTTP server span: tools/call find_orders (SERVER), parent: MCP send tools/call find_orders
+attribute gen_ai.operation.name: execute_tool
+attribute gen_ai.tool.name: find_orders
+attribute mcp.method.name: tools/call
+attribute mcp.protocol.version: 2026-07-28
+tool error span status: ERROR
+tool error span error.type: tool_error
+in-memory spans: server/discover, test find_orders, tools/call find_orders, tools/call find_orders, tools/list
+in-memory server span parents: none, test find_orders
+pinned semconv lists server/discover: False

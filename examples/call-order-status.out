@@ -1,0 +1,7 @@
+protocol revision: 2026-07-28
+server: shop-orders 0.1.0
+is error: False
+order status: shipped
+wrong ID is error: True
+wrong ID says: Error executing tool get_order_status: The shop has no order O-7144. Order IDs look like O-1873.
+without env says: Error executing tool get_order_status

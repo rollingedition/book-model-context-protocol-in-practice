@@ -1,0 +1,9 @@
+request example.fernhill/requestId: "req-0001"
+request io.modelcontextprotocol/protocolVersion: "2026-07-28"
+request io.modelcontextprotocol/clientInfo: {"name": "shop-host", "version": "0.1.0"}
+request io.modelcontextprotocol/clientCapabilities: {}
+result io.modelcontextprotocol/serverInfo: {"name": "shop-support", "version": "0.2.0"}
+request _meta bytes: 228
+result _meta bytes: 88
+without capabilities, error code: -32602
+without capabilities, message: params._meta is missing the required envelope key(s): io.modelcontextprotocol/clientCapabilities

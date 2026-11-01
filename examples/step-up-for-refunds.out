@@ -1,0 +1,12 @@
+lead, quote amount: 24.98
+lead, quote within limit: True
+lead, refund status: requested
+lead, authorization 1 asked for: orders:read stock:read
+lead, authorization 2 asked for: orders:read stock:read refunds:write
+lead, token scope: orders:read stock:read refunds:write
+non-lead, quote amount: 24.98
+non-lead, quote within limit: True
+non-lead, refund failed: MCPError Server returned an error response
+non-lead, authorization 1 asked for: orders:read stock:read
+non-lead, authorization 2 asked for: orders:read stock:read refunds:write
+non-lead, token scope: orders:read stock:read

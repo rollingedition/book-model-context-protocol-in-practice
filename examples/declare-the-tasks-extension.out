@@ -1,0 +1,6 @@
+protocol revision: 2026-07-28
+server declares: {"io.modelcontextprotocol/tasks": {}}
+client without it: -32021 Client did not declare required extension 'io.modelcontextprotocol/tasks'
+required: {"extensions": {"io.modelcontextprotocol/tasks": {}}}
+tasks/get without it: -32021
+client declares: {"extensions": {"io.modelcontextprotocol/tasks": {}}}

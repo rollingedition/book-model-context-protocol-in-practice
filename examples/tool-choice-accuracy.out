@@ -1,0 +1,17 @@
+first tool right: 36 of 48
+top-1 accuracy: 0.75
+expected shop.check_stock: 10 of 10
+expected shop.find_orders: 8 of 8
+expected shop.get_order_status: 12 of 14
+expected shop.quote_refund: 6 of 16
+expected shop.quote_refund, called shop.get_order_status: 8
+expected shop.get_order_status, called partner.track_parcel: 2
+expected shop.quote_refund, called shop.find_orders: 2
+right tool, order ID as the ticket wrote it: 18 of 18
+right tool, order the customer meant: 14 of 18
+tickets with a mistyped order ID: 5
+of which the right tool was called: 4
+mistyped T-0042, first tool: shop.get_order_status
+smallest expected-tool group, tickets: 8
+recorded model: Qwen3-4B-Instruct-2507
+recorded quantization: Q4_K_M

@@ -1,0 +1,19 @@
+written for: mcp==1.30.0
+removed dependencies: 2
+  sessions: server setup, quote_refund, issue_refund -> a handle the server mints, passed back as a tool argument
+  pushed requests: triage_ticket, issue_refund, save_restock_report -> an input request in a Multi Round-Trip Request
+deprecated dependencies: 5
+  sampling: triage_ticket -> a model call the host or the server makes itself
+  sampling earliest removal: first revision released on or after 2027-07-28
+  roots: save_restock_report -> a tool parameter, a resource URI or server configuration
+  roots earliest removal: first revision released on or after 2027-07-28
+  logging: quote_refund -> stderr on stdio, or OpenTelemetry
+  logging earliest removal: first revision released on or after 2027-07-28
+  HTTP+SSE transport: server setup -> Streamable HTTP
+  HTTP+SSE transport earliest removal: three months after SEP-2596 reaches Final
+  dynamic client registration: host setup -> a Client ID Metadata Document
+  dynamic client registration earliest removal: first revision released on or after 2027-07-28
+sdk dependencies: 3
+  FastMCP: server setup -> mcp.server.mcpserver.MCPServer
+  positional instructions: server setup -> instructions= by keyword
+  transport settings on the constructor: server setup -> arguments to run() or streamable_http_app()

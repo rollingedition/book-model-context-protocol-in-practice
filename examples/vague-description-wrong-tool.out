@@ -1,0 +1,27 @@
+T-0002 all three: find_orders
+T-0013 all three: find_orders
+T-0004 all three: get_order_status
+T-0022 all three: get_order_status
+T-0006 needs: quote_refund
+T-0006 vague: get_order_status
+T-0006 draft: get_order_status
+T-0006 revised: quote_refund
+T-0006 revised sku: KG-1031
+T-0006 order's skus: KG-1043
+T-0029 needs: quote_refund
+T-0029 vague: find_orders
+T-0029 draft: get_order_status
+T-0029 revised: quote_refund
+T-0029 revised sku: KG-1022
+T-0029 order's skus: KG-1019
+T-0024 needs: quote_refund
+T-0024 vague: get_order_status
+T-0024 draft: get_order_status
+T-0024 revised: quote_refund
+T-0024 revised sku: KG-1022
+T-0024 order's skus: KG-1050, KG-1051
+T-0016 all three: check_stock
+sampling temperature: 0.7
+vague right: 5 of 8
+draft right: 5 of 8
+revised right: 8 of 8

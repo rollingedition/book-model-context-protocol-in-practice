@@ -1,0 +1,19 @@
+customer_id: ["string"] {"pattern": "^C-\\d{4}$"}
+status: [["placed", "shipped", "delivered", "cancelled", "returned"], "null"] {"default": null}
+placed_since: ["date", "null"] {"default": null}
+limit: ["integer"] {"default": 10, "maximum": 50, "minimum": 1}
+bad arguments is error: True
+Error executing tool find_orders: 3 validation errors for find_ordersArguments
+customer_id
+  String should match pattern '^C-\d{4}$' [type=string_pattern_mismatch, input_value='42', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.14/v/string_pattern_mismatch
+status
+  Input should be 'placed', 'shipped', 'delivered', 'cancelled' or 'returned' [type=literal_error, input_value='lost', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.14/v/literal_error
+limit
+  Input should be less than or equal to 50 [type=less_than_equal, input_value=500, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.14/v/less_than_equal
+string limit is error: False
+string limit orders: 5
+since 2023-06-12 orders: 5
+since 2026-06-12 orders: 1

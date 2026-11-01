@@ -1,0 +1,16 @@
+find_orders assumes: read_only
+find_orders asks consent: False
+get_order_status assumes: read_only
+get_order_status asks consent: False
+quote_refund assumes: read_only
+quote_refund asks consent: False
+issue_refund assumes: idempotent
+issue_refund asks consent: True
+check_stock assumes: read_only
+check_stock asks consent: False
+post_refunds assumes: destructive, open_world
+post_refunds asks consent: True
+issue_refund first refund: R-0111
+issue_refund second refund: R-0111
+post_refunds first refund: R-0112
+post_refunds second refund: R-0113

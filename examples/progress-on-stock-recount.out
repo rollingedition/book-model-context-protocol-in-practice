@@ -1,0 +1,8 @@
+sse content-type: text/event-stream
+sse progress reports: 64
+sse last report: 64 of 64, recounted KG-1064
+sse units counted: 6969
+json content-type: application/json
+json progress reports: 0
+json last report: none
+json units counted: 6969

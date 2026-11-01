@@ -1,0 +1,9 @@
+result type: task
+handle fields: _meta, createdAt, lastUpdatedAt, pollIntervalMs, resultType, status, taskId, ttlMs
+status: working
+created at: 2026-06-30T09:00:00Z
+ttl ms: 3600000
+poll interval ms: 100
+task id length: 32
+tasks/get straight after: working
+Mcp-Name is the task id: True

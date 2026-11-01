@@ -1,0 +1,8 @@
+tool call is error: False
+tool says order status: shipped
+resource type: text/markdown
+resource first line: # Refund policy
+prompt arguments: order_id, required
+prompt messages: 1
+prompt role: user
+prompt starts: Review the refund request for order O-2476. …

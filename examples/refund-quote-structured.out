@@ -1,0 +1,8 @@
+output schema requires: quote_id, order_id, sku, amount, policy_limit, within_limit, expires_in_seconds
+structured content: {"quote_id": "(random)", "order_id": "O-2289", "sku": null, "amount": "180.00", "policy_limit": "150.00", "within_limit": false, "expires_in_seconds": 900}
+amount: 180.00
+within limit: False
+quote lifetime minutes: 15
+text block is the same JSON: True
+bare output schema: {"properties": {"result": {"title": "Result", "type": "string"}}, "required": ["result"], "title": "refund_amountOutput", "type": "object"}
+bare structured content: {"result": "180.00"}

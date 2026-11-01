@@ -1,0 +1,11 @@
+status: 401
+challenge parameters: error, error_description, resource_metadata
+challenge error: invalid_token
+resource metadata path: /.well-known/oauth-protected-resource/mcp
+resource is the endpoint's URL: True
+authorization servers: 1
+scopes_supported: orders:read stock:read
+metadata issuer is the URL it came from: True
+code_challenge_methods_supported: ['S256']
+client_id_metadata_document_supported: True
+authorization_response_iss_parameter_supported: True

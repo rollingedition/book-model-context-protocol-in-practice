@@ -1,0 +1,17 @@
+refund policy limit: 150.00
+O-1145 quote id: Q-140ce69dd6
+O-1145 asked by: shop
+O-1145 message: Refund 343.49 on order O-1145? It is above the policy limit, so a lead must confirm it.
+O-1145 lead's answer: accept
+O-1145 outcome: result
+O-1145 back to the model: {"refund_id": "R-0111", "quote_id": "Q-140ce69dd6", "order_id": "O-1145", "amount": "343.49", "status": "requested"}
+O-2289 quote id: Q-98d6567215
+O-2289 asked by: shop
+O-2289 message: Refund 180.00 on order O-2289? It is above the policy limit, so a lead must confirm it.
+O-2289 lead's answer: decline
+O-2289 outcome: tool error
+O-2289 back to the model: Error executing tool issue_refund: Nobody confirmed refund R-0112, so the shop's API still holds it.
+form fields: release
+input requests answered: 2
+retry rounds allowed per call: 10
+consent asked for: ['issue_refund', 'issue_refund']

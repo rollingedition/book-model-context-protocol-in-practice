@@ -1,0 +1,5 @@
+server saw: cancelled with 5 of 64 recounted
+recounts asked of the API: 6
+POSTs: server/discover, tools/call
+tools/call stream: closed by the client
+tools/call messages: 5 progress, 0 result

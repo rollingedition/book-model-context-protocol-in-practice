@@ -1,0 +1,10 @@
+track_parcel readOnlyHint: True
+shop/get_order_status: ran
+shop/get_order_status status: shipped
+  host asks: shop/issue_refund {"quote_id": "Q-..."}...
+  server asks: Refund 503.99 on order O-1928?
+shop/issue_refund: ran
+shop/issue_refund status: requested
+  host asks: partner/track_parcel {"tracking_number": "FX-00000000", "note": "hey\n\nI placed ...
+partner/track_parcel: not called
+decisions logged: get_order_status allowed by the host's list; issue_refund approved by the user; track_parcel declined by the user

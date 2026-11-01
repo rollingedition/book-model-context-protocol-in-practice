@@ -1,0 +1,11 @@
+# Book manifest: how this book is cataloged. Validated against the taxonomy on every pull request.
+slug = "model-context-protocol-in-practice"
+title = "Model Context Protocol in Practice"
+summary = "Tools and data for agents, for engineers who know APIs: what MCP adds to an HTTP API and when it's the wrong choice, and how to design, build, secure, test and run MCP servers and clients on specification revision 2026-07-28 with the Python SDK, mcp 2.x, with a migration path from the 2025 revisions."
+status = "live"                      # draft | live | unmaintained | retired
+level = "in-practice"                 # foundations | in-practice
+reader = "For engineers who build or call HTTP APIs and now need to give agents tools and data, or connect an agent to someone else's. No machine learning background needed."
+skills = ["ai-agents", "large-language-models"]   # 1 to 5; the first is primary
+line = "main"                         # edition line
+core_libraries = ["mcp"]              # names only; versions are pinned in examples/requirements.txt
+sponsor = ""

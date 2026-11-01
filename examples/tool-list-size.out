@@ -1,0 +1,11 @@
+tools/list result bytes: 8049
+revised prompt bytes: 3417
+revised prompt tokens: 970
+vague prompt bytes: 1945
+vague prompt tokens: 620
+endpoint prompt bytes: 1014
+endpoint prompt tokens: 288
+revised tokens per tool: 194
+20 such tools tokens: 3880
+prompt without tools tokens: 136
+recording context tokens: 4096

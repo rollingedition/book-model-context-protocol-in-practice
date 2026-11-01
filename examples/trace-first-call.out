@@ -1,0 +1,62 @@
+1. -> request server/discover (id 1)
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "server/discover",
+  "params": {
+    "_meta": {
+      "io.modelcontextprotocol/protocolVersion": "2026-07-28",
+      "io.modelcontextprotocol/clientInfo": {
+        "name": "shop-host",
+        "version": "0.1.0"
+      },
+      "io.modelcontextprotocol/clientCapabilities": {}
+    }
+  }
+}
+2. <- result (id 1) result: {"cacheScope": "private", "capabilities": "{…}", "resultType": "complete", "supportedVersions": "[…]", "ttlMs": 0, "_meta": "{…}"}
+3. -> request tools/list (id 2) params: {"_meta": "{…}"}
+4. <- result (id 2) result: {"cacheScope": "private", "resultType": "complete", "tools": "[…]", "ttlMs": 0, "_meta": "{…}"}
+5. -> request tools/call (id 3)
+{
+  "jsonrpc": "2.0",
+  "id": 3,
+  "method": "tools/call",
+  "params": {
+    "name": "get_order_status",
+    "arguments": {
+      "order_id": "O-2476"
+    },
+    "_meta": {
+      "io.modelcontextprotocol/protocolVersion": "2026-07-28",
+      "io.modelcontextprotocol/clientInfo": {
+        "name": "shop-host",
+        "version": "0.1.0"
+      },
+      "io.modelcontextprotocol/clientCapabilities": {}
+    }
+  }
+}
+6. <- result (id 3)
+{
+  "jsonrpc": "2.0",
+  "id": 3,
+  "result": {
+    "content": [
+      {
+        "text": "{\n  \"order_id\": \"O-2476\",\n  \"customer_id\": \"C-0…",
+        "type": "text"
+      }
+    ],
+    "isError": false,
+    "resultType": "complete",
+    "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+        "name": "shop-orders",
+        "version": "0.1.0"
+      }
+    }
+  }
+}
+messages: 6
+methods: server/discover, tools/list, tools/call

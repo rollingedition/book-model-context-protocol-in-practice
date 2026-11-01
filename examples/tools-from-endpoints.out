@@ -1,0 +1,15 @@
+endpoint tool: get_orders []
+endpoint tool: get_orders_by_order_id ['order_id']
+endpoint tool: get_stock_by_sku ['sku']
+endpoint tool: post_refunds ['order_id', 'amount']
+endpoint tool: post_stock_by_sku_recount ['sku']
+protocol revision: 2026-07-28
+task tool: find_orders ['customer_id']
+task tool: get_order_status ['order_id']
+task tool: quote_refund ['order_id']
+task tool: issue_refund ['quote_id']
+task tool: check_stock ['sku']
+post_refunds status: 201
+post_refunds amount: 49.96
+quote_refund amount: 23.98
+quote_refund within limit: True

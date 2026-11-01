@@ -1,0 +1,7 @@
+own keys reads on a and b: delivered, delivered
+own keys retry on b: error -32602 Invalid or expired requestState
+shared key reads on a and b: delivered, delivered
+shared key retry on b: Error executing tool issue_refund: There is no quote Q-…
+shared store reads on a and b: delivered, delivered
+shared store retry on b: requested
+shared store replay on a: Error executing tool issue_refund: Refund R-0113 was already confirmed

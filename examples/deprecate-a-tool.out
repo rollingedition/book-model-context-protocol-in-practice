@@ -1,0 +1,6 @@
+release 1: 5 tools, ttlMs 60000
+event: ToolsListChanged
+listening client sees: get_order_status, quote_refund, issue_refund, check_stock, find_orders_v2, find_orders
+cached client sees: find_orders, get_order_status, quote_refund, issue_refund, check_stock
+find_orders during the window: result
+find_orders after the window: Error executing tool find_orders: find_orders was retired. Call find_orders_v2 with the same customer_id.

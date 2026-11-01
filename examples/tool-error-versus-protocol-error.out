@@ -1,0 +1,10 @@
+wrong SKU is error: True
+wrong SKU says: Error executing tool quote_refund: Order O-2289 has no line for KG-1031. Its SKUs are KG-1043.
+unknown quote is error: True
+unknown quote says: Error executing tool issue_refund: There is no quote Q-0000000000. Call quote_refund for the order to get a quote_id.
+unknown tool is error: True
+unknown tool says: Unknown tool: refund_order
+rejected key JSON-RPC error code: -32603
+rejected key JSON-RPC error message: The shop's API rejected this server's key. The server needs reconfiguring.
+API down is error: True
+API down says: Error executing tool get_order_status

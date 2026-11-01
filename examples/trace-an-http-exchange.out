@@ -1,0 +1,14 @@
+POSTs: server/discover, tools/call, tools/list
+request content-type: application/json
+request accept: application/json, text/event-stream
+request mcp-protocol-version: 2026-07-28
+request mcp-method: tools/call
+request mcp-name: get_order_status
+request _meta keys: io.modelcontextprotocol/protocolVersion, io.modelcontextprotocol/clientInfo, io.modelcontextprotocol/clientCapabilities
+response status: 200
+response content-type: application/json
+response mcp-session-id: none
+mismatched Mcp-Name status: 400
+mismatched Mcp-Name error: -32020 mcp-name header does not match the request body's 'name' parameter
+GET status: 405
+GET allow: POST
