@@ -24,7 +24,7 @@ def ask(order_id: str, sku: str) -> Elicit[Inspection]:
 
 
 @server.tool(description="Record what a returned item was like when its parcel was opened. The user fills in a form.")
-def record_return(order_id: str, sku: str, found: Annotated[ElicitationResult[Inspection], Resolve(ask)]) -> str:   # the SDK runs ask(), shows the form, and fills found in on the retry
+def record_return(order_id: str, sku: str, found: Annotated[ElicitationResult[Inspection], Resolve(ask)]) -> str:   # the SDK runs ask(), sends the form as an input request, and fills found in on the retry
     if isinstance(found, AcceptedElicitation):
         return f"Recorded: {found.data.reason}, restock {found.data.restock}."
     return ("The user declined: don't record this return, and don't ask again." if found.action == "decline"
