@@ -26,8 +26,8 @@ async def main() -> None:
 
             # "5" is a string; pydantic converts it to the integer 5 before the tool runs
             loose = await client.call_tool("find_orders", {"customer_id": "C-0085", "limit": "5"})
-            assert not loose.is_error
             print("string limit is error:", loose.is_error)
+            assert not loose.is_error
             print("string limit orders:", len(loose.structured_content["orders"]))
 
             # T-0013 asks for orders "since 12 Jun"; the recorded model sent 2023-06-12, a valid date

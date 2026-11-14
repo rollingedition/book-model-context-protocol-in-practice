@@ -30,7 +30,7 @@ async def main() -> None:
                                                             "reason": "arrived damaged"})
             print("quote_refund amount:", quote.structured_content["amount"])
             print("quote_refund within limit:", quote.structured_content["within_limit"])
-            assert quote.structured_content["within_limit"]  # asserted, not only printed: a policy change fails this run
+            assert quote.structured_content["within_limit"]  # the muffin tray's line is under the refund policy's limit
 
 
 asyncio.run(main())

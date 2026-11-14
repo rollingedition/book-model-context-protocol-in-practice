@@ -10,7 +10,7 @@ from lib.host import ReplayModel, choose_tool
 from lib.shop_data import load_shop
 
 
-async def attempt(params, name: str, arguments: dict, label: str):
+async def attempt(params, name: str, arguments: dict, label: str) -> object | None:
     async with Client(params) as client:
         try:
             result = await client.call_tool(name, arguments)
