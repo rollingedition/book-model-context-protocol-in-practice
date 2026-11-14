@@ -12,7 +12,7 @@ from lib import loopback, shop_api
 from lib.host import ReplayModel, choose_tool
 from lib.shop_data import load_shop
 
-model = ReplayModel("pick-a-tool")
+model = ReplayModel("pick-a-tool")  # answers only with the replies recorded for these exact messages
 
 
 async def main() -> None:
@@ -24,11 +24,12 @@ async def main() -> None:
             tools = (await client.list_tools()).tools
             for ticket_id in ("T-0003", "T-0010", "T-0015"):
                 ticket = shop.ticket(ticket_id)
+                # the longest paragraph of the ticket, which holds the customer's question
                 print(f"{ticket_id} asks:", max(ticket.body.split("\n\n"), key=len))
                 choice = choose_tool(model, ticket, tools)
                 print(f"{ticket_id} tool:", choice.tool or "none")
-                if choice.tool is None:
-                    print(f"{ticket_id} reply:", choice.reply[:72] + "…")
+                if choice.tool is None:  # the model answered in words, so there is no call to make
+                    print(f"{ticket_id} reply:", choice.reply[:72] + "…")  # the first 72 characters
                     continue
                 print(f"{ticket_id} order id:", choice.arguments.get("order_id"))
                 result = await client.call_tool(choice.tool, choice.arguments)
