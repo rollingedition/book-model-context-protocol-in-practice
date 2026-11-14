@@ -18,6 +18,3 @@ say = "The code replays chapter 10's queue run and scores each ticket's first to
 
 [examples.deprecate-a-tool]
 say = "The code serves the shop's tools over Streamable HTTP on loopback, with a one-minute time to live on the tool list, and connects two clients that both list the tools: one listens for list changes, and one only caches. Release 1 lists {{out:deprecate-a-tool:release 1}}. Release 2 adds find orders v two, marks find orders as deprecated in its description, and publishes the change. The listening client receives a tools list changed event, and its next listing shows both tools. The caching client still shows release 1's five tools, and its call to find orders during the window comes back as a {{out:deprecate-a-tool:find_orders during the window}}. Release 3 replaces find orders with a function that raises a tool error, and the caching client's next call reads: {{out:deprecate-a-tool:find_orders after the window}}"
-
-[terms]
-"0.66b2" = "zero point sixty-six beta two"
