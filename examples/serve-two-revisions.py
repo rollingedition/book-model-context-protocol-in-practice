@@ -1,6 +1,6 @@
 """Serves the ported refund confirmation from one app to a 2026-07-28 client and a 2025-11-25 client, then sends the 2025
-client's session ID to a second replica. The prose's point rests on the two session lines: the replica that made the session
-answers, and the other returns a 404."""
+client's session ID to a second replica. The prose's point rests on the two "question came as" lines (one resolver, two
+forms), the two refund lines, and the two session lines: the replica that made the session answers, and the other returns a 404."""
 import asyncio
 import os
 
@@ -40,7 +40,7 @@ async def main() -> None:
                     for replica, url in (("a", a), ("b", b)) if session else ():   # no session, nothing to send
                         sent = httpx2.post(url + "/mcp", headers={"Mcp-Session-Id": session, **LEGACY},
                                            json={"jsonrpc": "2.0", "id": 9, "method": "tools/list"})
-                        listed = "tools listed" if "check_stock" in sent.text else sent.json()["error"]["message"]   # check_stock is in the list
+                        listed = "tools listed" if "check_stock" in sent.text else sent.json()["error"]["message"]
                         print(f"2025 session on replica {replica}: HTTP {sent.status_code},", listed)
                 print(f"{mode} question came as:", asked_how(wire.read_http_trace("a.jsonl")[seen:]))  # this client's exchanges, as replica a logged them
                 print(f"{mode} refund:", refund.structured_content["status"])

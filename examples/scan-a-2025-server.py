@@ -1,5 +1,5 @@
 """Sorts the 2025-era server's dependencies, and its host's OAuth setup, into removed, deprecated and SDK changes, each
-with its replacement. The prose's point, that removed dependencies fail for every client, rests on the first group's
+with its replacement. The prose's point, that removed dependencies fail for every client at the pinned revision, rests on the first group's
 count and the functions it names."""
 import ast
 

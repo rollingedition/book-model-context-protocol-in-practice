@@ -16,7 +16,7 @@ try:
 except ImportError as error:
     print("import McpError:", str(error).split(" (")[0])   # drops the parenthetical
 try:
-    MCPServer("shop-support", instructions=INSTRUCTIONS, port=8000, stateless_http=False)   # both moved to run() in 2.x
+    MCPServer("shop-support", instructions=INSTRUCTIONS, port=8000, stateless_http=False)   # port and stateless_http moved to run() and streamable_http_app() in 2.x
 except TypeError as error:
     print("port on the constructor:", error)
 

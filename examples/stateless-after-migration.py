@@ -18,7 +18,7 @@ sessions_seen = set()
 @server.tool(description="Quote a refund for a whole order, for issue_refund to refund.")
 def quote_refund(order_id: str, ctx: Context) -> str:
     sessions_seen.add(id(ctx.session))       # each request gets its own session object at the pinned revision
-    quotes[ctx.session] = chapter3["quote_refund"].fn(order_id, sku="KG-1050")   # the port fixes the SKU
+    quotes[ctx.session] = chapter3["quote_refund"].fn(order_id, sku="KG-1050")   # chapter 3's quote needs a SKU; the port pins one
     return f"Quoted {quotes[ctx.session].amount}."
 
 

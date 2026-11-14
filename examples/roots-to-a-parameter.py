@@ -20,7 +20,7 @@ async def save_restock_report(export_dir: str) -> str:
     if folder not in EXPORT_DIRS:            # an exact match, so a subfolder of an allowed folder is refused too
         raise ToolError(f"{export_dir} isn't an export folder. Use one of: {', '.join(d.name for d in EXPORT_DIRS)}.")
     report = await restock.run(below=30, seconds=0)   # reports SKUs under 30 units; seconds=0 skips the per-SKU wait
-    folder.mkdir(exist_ok=True)              # an existing folder is fine
+    folder.mkdir(exist_ok=True)
     (folder / "restock.csv").write_text("sku,units\n" + "".join(f"{r.sku},{r.units}\n" for r in report.reorder))
     return f"Saved {len(report.reorder)} products to reorder in {export_dir}/restock.csv."
 
