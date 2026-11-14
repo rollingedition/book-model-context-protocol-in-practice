@@ -1,4 +1,3 @@
-track_parcel readOnlyHint: True
 shop/get_order_status: ran
 shop/get_order_status status: shipped
   host asks: shop/issue_refund {"quote_id": "Q-..."}...

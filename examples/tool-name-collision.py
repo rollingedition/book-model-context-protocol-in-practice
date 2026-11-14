@@ -1,5 +1,5 @@
-"""The partner's next release adds its own get_order_status. ClientSessionGroup refuses the second server; the host's
-prefixes keep both tools, and route each name the model sees back to its server and its name on the wire."""
+"""The partner's next release adds its own get_order_status, and ClientSessionGroup refuses it beside the shop's. The
+host's prefixes keep both tools, and route each name the model sees back to one server, or to none for a bare name."""
 import asyncio
 import sys
 
@@ -19,6 +19,7 @@ def get_order_status(delivery_id: str) -> str:
 
 
 async def main() -> None:
+    # the partner's server is this same file, started with --serve, so it runs the tool defined above
     mine = StdioServerParameters(command=sys.executable, args=[__file__, "--serve"], env={})
     with loopback.serve(shop_api.create_app()) as base_url:
         servers = {"shop": support_shop.server_params(base_url), "partner": mine}
@@ -33,8 +34,9 @@ async def main() -> None:
             names = [tool.name for tool in host.tools()]
             print("tools the model sees:", len(names))
             for name in names:
-                if name.endswith("get_order_status"):
+                if name.endswith("get_order_status"):      # the colliding tool's two names, one from each server
                     print(f"{name} routes to:", host.route(name))
+            # a bare name has no prefix, so the host can't tell which server the model meant, and routes it to None
             print("get_order_status routes to:", host.route("get_order_status"))
 
 
