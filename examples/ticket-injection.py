@@ -1,7 +1,7 @@
-"""The six tickets that carry instructions for an agent. The count of first calls that followed an injection is the
-model's replayed choice for each (from `poisoned-tools`); the lines ending in "obeyed anyway" show what `lib.owned_shop`
-does if a host the ticket's customer signed in to does the worst single thing most of them ask: quote the ticket's
-order and refund it at once, with an `amount` of 500.00."""
+"""The six tickets that carry instructions for an agent. The model's first choice for each is replayed from
+`poisoned-tools`, and the `first calls that followed an injection` line counts the ones that obeyed; the lines ending in
+"obeyed anyway" show what `lib.owned_shop` does if a host the ticket's customer signed in to does the worst single thing
+most of them ask: quote the ticket's order and refund it at once, with an `amount` of 500.00."""
 import asyncio
 import json
 import os

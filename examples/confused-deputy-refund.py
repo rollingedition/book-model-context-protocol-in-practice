@@ -1,6 +1,6 @@
-"""A confused deputy: a customer signed in as C-0127 asks the shop's server about C-0116's orders and spends C-0116's
-quote. Chapter 3's tools do it with the server's own key; `lib.owned_shop` takes the customer from the token's subject
-and refuses each step, and the spend line of each run is the point."""
+"""A confused deputy: a customer signs in to a host as C-0127 and asks the shop's server about C-0116's orders, refunds
+one, and then spends C-0116's quote. Chapter 3's tools do it with the server's own key; `lib.owned_shop` takes the
+customer from the token's subject, so it lists only C-0127's orders and refuses the rest."""
 import json
 import os
 import re

@@ -1,6 +1,6 @@
 """A rug pull: the partner's server changes `track_parcel`'s description in its next release. The host pinned each
-definition it approved, so it sees the changed field and keeps the tool from the model. The title and annotations a host
-usually shows its user are unchanged, and the last line shows which tools the model is left with."""
+definition it approved, so it notices the change and keeps the tool from the model until the user approves again. The
+title and read-only hint are unchanged, and the last line shows which tools the model is left with."""
 import asyncio
 
 from mcp import Client
