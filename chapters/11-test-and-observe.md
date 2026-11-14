@@ -84,7 +84,7 @@ Over HTTP the spans came in pairs, each server span paired with a client span of
 
 Its attributes name the method, `{{out:trace-a-tool-call:attribute mcp.method.name}}`, the operation, `{{out:trace-a-tool-call:attribute gen_ai.operation.name}}`, the tool, `{{out:trace-a-tool-call:attribute gen_ai.tool.name}}`, and the revision (`mcp/server/_otel.py`).
 
-The failed quote's span has the status {{out:trace-a-tool-call:tool error span status}} and the `error.type` `{{out:trace-a-tool-call:tool error span error.type}}`, although the call returned a result and not a JSON-RPC error, so a tracing backend can count tool errors without reading result bodies.
+The failed quote's span has the status {{out:trace-a-tool-call:tool error span status}} and the `error.type` `{{out:trace-a-tool-call:tool error span error.type}}`, although the call returned a result and not a JSON-RPC error, so a tracing backend can count tool execution errors without reading result bodies.
 
 A test of trace propagation needs HTTP or stdio, because in memory the server has nothing to extract. In memory there were no client spans, only the server's spans and the test's own `test find_orders`: {{out:trace-a-tool-call:in-memory spans}}. The two server spans' parents were {{out:trace-a-tool-call:in-memory server span parents}}, in that order. With nothing to extract, the server falls back to whatever span is current, and only the test's own span gave it one (`mcp/shared/_otel.py`, `extract_trace_context`).
 
