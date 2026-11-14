@@ -1,5 +1,6 @@
-"""pay_refund sends the support lead to the payment provider's page to connect their account. URL mode keeps the
-sign-in out of the client, and accept means only that the user agreed to open the page."""
+"""pay_refund sends the support lead to the payment provider's page to connect an account, through URL mode, so the
+sign-in stays out of the client. The point rests on the after-accept line, which still asks, and the after-sign-in
+line, which completes only once the provider has recorded the flow as finished."""
 import asyncio
 import secrets
 
@@ -15,7 +16,7 @@ finished: set[str] = set()     # flows the payment provider reports finished; it
 
 @server.tool(description="Pay out a released refund through the shop's payment provider, by its refund_id.")
 def pay_refund(refund_id: str, ctx: Context) -> str | InputRequiredResult:
-    flow = ctx.request_state or secrets.token_urlsafe(16)    # the server's own ID for this flow, carried in requestState
+    flow = ctx.request_state or secrets.token_urlsafe(16)    # the server's own ID for this flow, carried in requestState; 16 random bytes, so it can't be guessed
     if flow in finished:
         return f"Paid {refund_id} through the payment provider"
     answer = (ctx.input_responses or {}).get("connect")

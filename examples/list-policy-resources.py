@@ -27,7 +27,7 @@ for policy in load_policies():
 
 
 async def main() -> None:
-    params = StdioServerParameters(command=sys.executable, args=[__file__, "--serve"], env={})  # no variables; the server needs none
+    params = StdioServerParameters(command=sys.executable, args=[__file__, "--serve"], env={})
     async with Client(params) as client:
         print("protocol revision:", client.protocol_version)
         listed = await client.list_resources()

@@ -1,5 +1,5 @@
 """Reads orders through the template shop://orders/{order_id} and prints what each kind of miss returns.
-The point rests on the codes, which are all -32602, and on the traversal's message, which the SDK wrote rather than the handler."""
+The point rests on the codes, which are all the same, and on the traversal's message, which the SDK wrote rather than the handler."""
 import asyncio
 import json
 import re
@@ -44,6 +44,7 @@ async def main() -> None:
                     print(f"{case} code:", err.error.code)
                     print(f"{case} says:", err.error.message)
                     print(f"{case} data uri:", err.error.data["uri"])  # the URI the server could not read, which the error carries
+                    assert err.error.code == -32602, case  # every miss gets the same code, the one the prose names
 
 
 if __name__ == "__main__":

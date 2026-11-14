@@ -1,5 +1,5 @@
 """Packages a refund review as a prompt, with the refund policy embedded, the order quoted and the arguments checked first.
-The point rests on the two messages, and on the three failures: a bad path gets -32602, while a missing amount and a misspelled name both get -32603."""
+The point rests on the two messages, and on the three failures: a bad path gets Invalid Params, while a missing amount and a misspelled name both get an internal error."""
 import asyncio
 import json
 import re
@@ -39,7 +39,7 @@ async def main() -> None:
     with loopback.serve(shop_api.create_app()) as base_url:
         env = shop_api.server_env(base_url)
         async with Client(StdioServerParameters(command=sys.executable, args=[__file__, "--serve"], env=env)) as client:
-            for n, message in enumerate((await client.get_prompt("review_refund", good)).messages, 1):  # numbers from 1
+            for n, message in enumerate((await client.get_prompt("review_refund", good)).messages, 1):
                 print(f"message {n}:", message.role, message.content.type)
             for case, (name, arguments) in tries.items():
                 try:
