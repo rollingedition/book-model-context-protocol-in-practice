@@ -17,7 +17,7 @@ def protected(issuer: str):
     return build
 
 
-with auth_server.serve() as issuer, auth_server.serve_built(protected(issuer.url)) as base_url:  # serve_built opens the socket first
+with auth_server.serve() as issuer, auth_server.serve_built(protected(issuer.url)) as base_url:  # the socket opens before the app is built, so the app knows its URL
     first = http_mcp.post(base_url + "/mcp", "tools/list")                     # no token
     print("status:", first.status_code)
     # [7:] drops the scheme, "Bearer ", which is 7 characters; the values that follow are quoted

@@ -1,6 +1,7 @@
 """The shop's server refuses a refund without `refunds:write` with a 403 challenge, decided on the parsed body rather than
-on `Mcp-Name` or the first `Authorization` header. The point rests on the 403 lines, and on the refusals a header-only
-check would have let through: the spellings of `Mcp-Name`, the 2025-11-25 client, and the second header."""
+on `Mcp-Name` or the first `Authorization` header, refuses methods no scope maps, and can hide the tools a token can't
+call. The point rests on the 403 lines, and on the refusals a header-only check would have let through: the spellings of
+`Mcp-Name`, the 2025-11-25 client, and the second header."""
 import json
 import os
 
@@ -21,7 +22,7 @@ with auth_server.serve() as issuer, loopback.serve(shop_api.create_app()) as api
             token = auth_server.mint(issuer.url, url, ["orders:read", "stock:read"])
             listed = http_mcp.post(url, "tools/list", headers=bearer(token)).json()["result"]
             print(f"hide_tools={hide}, tools listed:", ", ".join(tool["name"] for tool in listed["tools"]))
-    print("tools/list cacheScope:", listed["cacheScope"])                 # the SDK's default for a list that depends on the token
+    print("tools/list cacheScope:", listed["cacheScope"])                 # the SDK's default, which suits a list that depends on the token
     with protected_shop.serve(issuer.url) as url:
         token = auth_server.mint(issuer.url, url, ["orders:read", "stock:read"])
         status = http_mcp.post(url, "tools/call", {"name": "get_order_status", "arguments": {"order_id": "O-1873"}},

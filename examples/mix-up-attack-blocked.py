@@ -24,7 +24,7 @@ async def attempt(label: str, **shop_options) -> None:
             print(f"{label}, codes the attacker received:", len(attacker.stolen))
             for loot in attacker.stolen:
                 claims = auth_server.claims(loot["access_token"])
-                assert claims["aud"] == shop_url                              # the shop's server accepts the attacker's token
+                assert claims["aud"] == shop_url                              # the token names the shop's server as its audience
                 print(f"{label}, attacker's token scope:", claims["scope"])
 
 
