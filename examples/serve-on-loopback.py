@@ -1,4 +1,6 @@
-"""Serve chapter 3's five tools over Streamable HTTP on loopback, and call one from a client that has only a URL."""
+"""Serves chapter 3's five tools over Streamable HTTP in a process of its own, then calls one from a client that has only
+the endpoint's URL. The point rests on the protocol revision and O-1873 status lines: the client settles on the pinned
+revision and gets the order's status back."""
 import asyncio
 import sys
 from urllib.parse import urlsplit
@@ -12,8 +14,8 @@ server = shop_tools.create_server(version="0.6.0")      # chapter 3's tools, unc
 
 async def main() -> None:
     with loopback.serve(shop_api.create_app()) as api_url:
-        with http_mcp.launch(__file__, env=shop_api.server_env(api_url)) as url:
-            async with Client(url) as client:
+        with http_mcp.launch(__file__, env=shop_api.server_env(api_url)) as url:   # runs this file again with --serve, as its own process
+            async with Client(url) as client:                                # no handshake: the client needs only the URL
                 print("endpoint host:", urlsplit(url).hostname)
                 print("endpoint path:", urlsplit(url).path)
                 print("protocol revision:", client.protocol_version)

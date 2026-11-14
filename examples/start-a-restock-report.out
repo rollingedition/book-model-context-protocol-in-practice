@@ -6,4 +6,3 @@ ttl ms: 3600000
 poll interval ms: 100
 task id length: 32
 tasks/get straight after: working
-Mcp-Name is the task id: True

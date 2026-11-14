@@ -1,4 +1,6 @@
-"""recount_stock reports progress as it walks the shop's products, and a JSON-only server drops every report."""
+"""Runs recount_stock with progress reports, once with the SDK's streaming responses and once with JSON-only responses. The
+point rests on the content-type and progress report lines: a JSON-only server drops every report, though the recount still
+counts the same units."""
 import asyncio
 import os
 
@@ -16,13 +18,14 @@ async def recount_stock(ctx: Context) -> recount.Recount:
     """Recount every product's stock in both warehouses. Slow: reports progress per product."""
     units = 0
     async with recount.api() as api:
-        for n, sku in enumerate(recount.SKUS, 1):
-            units += await recount.one(api, sku)
+        for n, sku in enumerate(recount.SKUS, 1):                       # counts from 1, so the last report is the total
+            units += await recount.one(api, sku)                        # lib.recount has the API take 0.02 seconds per product unless told otherwise
             await ctx.report_progress(n, total=len(recount.SKUS), message=f"recounted {sku}")
     return recount.Recount(skus=len(recount.SKUS), units=units)
 
 
 async def run(mode: str, json_response: bool) -> None:
+    # json_response=True sends every response as one JSON object, with no stream for reports to travel on
     app = wire.record_http(server.streamable_http_app(json_response=json_response), log=f"{mode}.jsonl")
     reports = []
 
