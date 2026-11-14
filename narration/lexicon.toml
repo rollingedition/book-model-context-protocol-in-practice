@@ -474,7 +474,7 @@
 "MCP send {method} {target}" = "M C P send, then the method and the target"
 "{mcp.method.name} {target}" = "the M C P method name, then the target"
 "GenAI" = "gen A I"
-"0.66b1" = "zero point sixty-six beta one"
+"0.66b2" = "zero point sixty-six beta two"
 "BFCL" = "B F C L"
 "RAG" = "rag"
 "ToolsListChanged" = "tools list changed"
