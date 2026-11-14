@@ -50,7 +50,7 @@ The handle is a `CreateTaskResult`: a result whose `resultType` is `"task"` inst
 
 `lib.tasks` puts all of this in `Tasks.intercept_tool_call`, the SDK's one hook around `tools/call`. For a call to `restock_report`, it checks the request's declaration, creates a task record with an ID from `secrets.token_urlsafe(24)`, and stores it. Then it starts the tool's ordinary handler in the background and returns the handle. Because the background work runs the same handler as a plain call, the task's result is exactly the `CallToolResult` a plain call returns. Timestamps come from `tasks.Clock`, a fake clock that starts on the shop's reference date, 30 June 2026, and moves only when an example moves it, so the output is the same on every run.
 
-Loading the server from the previous example, a client calls `restock_report` with `allow_claimed=True`, which returns the handle itself rather than the finished report. It then sends one `tasks/get` straight after, to check that the server already holds the task.
+Loading the server from [the previous example](#negotiate-an-extension), a client calls `restock_report` with `allow_claimed=True`, which returns the handle itself rather than the finished report. It then sends one `tasks/get` straight after, to check that the server already holds the task.
 
 [Start the restock report as a task](../examples/start-a-restock-report.py)
 
