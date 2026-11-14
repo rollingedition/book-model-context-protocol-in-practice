@@ -1,4 +1,5 @@
-"""The 2025 server's pushed confirmation becomes a resolver's question, and its log line goes to stderr."""
+"""Ports the 2025 server's pushed confirmation to a resolver that serves both eras, and its log line to stderr. The prose's
+point rests on the first round's result and the question it asks, and the refund's status after the lead's yes."""
 import asyncio
 import logging
 import os
@@ -22,6 +23,7 @@ def confirm(quote_id: confirmations.QuoteId) -> Elicit[Release] | Release:
     refund = held.fn(quote_id)                                # the same quote always gives the same refund
     if refund.status != "needs_confirmation":
         return Release(release=False)                         # nothing held, so nothing to ask
+    # returning Elicit asks the person at the host; the SDK sends the question in the client's form
     return Elicit(f"Refund {refund.amount} on order {refund.order_id}? It is above the policy limit.", Release)
 
 
@@ -41,10 +43,10 @@ async def main() -> None:
             async with Client(url + "/mcp", elicitation_callback=confirmations.say_yes) as client:
                 quote = (await client.call_tool("quote_refund", {"order_id": "O-2289"})).structured_content
                 first = await client.session.call_tool("issue_refund", {"quote_id": quote["quote_id"]},
-                                                        allow_input_required=True)
+                                                        allow_input_required=True)   # returns the input request, not an answer
                 print("first round:", first.result_type)
                 print("first round asks:", ", ".join(r.method for r in first.input_requests.values()))
-                refund = await client.call_tool("issue_refund", {"quote_id": quote["quote_id"]})
+                refund = await client.call_tool("issue_refund", {"quote_id": quote["quote_id"]})   # Client answers with the lead's yes
                 print("refund after the lead's yes:", refund.structured_content["status"])
 
 

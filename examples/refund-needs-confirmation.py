@@ -1,5 +1,6 @@
-"""The 2025 way to confirm a refund: issue_refund calls ctx.elicit() and waits for the user's answer. At revision
-2026-07-28 a server can't send a request to the client, so the call fails before anyone is asked."""
+"""The 2025 way to confirm a refund, which fails at revision 2026-07-28: issue_refund calls ctx.elicit() and waits,
+but the protocol gives the server no channel back to the client. The printed error code and the count of questions
+the user saw show the failure, before anyone is asked."""
 import asyncio
 import sys
 
@@ -35,7 +36,7 @@ async def say_yes(context, params) -> ElicitResult:   # a scripted user, who wou
 
 async def main() -> None:
     with loopback.serve(shop_api.create_app()) as base_url:
-        async with Client(confirmations.launch(__file__, base_url), elicitation_callback=say_yes) as client:
+        async with Client(confirmations.launch(__file__, base_url), elicitation_callback=say_yes) as client:   # starts this file with --serve
             print("protocol revision:", client.protocol_version)
             quote = (await client.call_tool("quote_refund", {"order_id": "O-2289"})).structured_content
             try:
@@ -46,4 +47,4 @@ async def main() -> None:
             print("questions the user saw:", len(asked))
 
 
-server.run() if "--serve" in sys.argv else asyncio.run(main())
+server.run() if "--serve" in sys.argv else asyncio.run(main())   # the client runs this file with --serve; run directly, it starts the client

@@ -1,4 +1,3 @@
-tool call is error: False
 tool says order status: shipped
 resource type: text/markdown
 resource first line: # Refund policy

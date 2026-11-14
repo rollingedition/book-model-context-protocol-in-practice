@@ -4,5 +4,4 @@ partner server: partner-tracking
 partner protocol revision: 2026-07-28
 ClientSessionGroup protocol revision: 2025-11-25
 reconnect protocol revision: 2026-07-28
-reconnect sent server/discover: False
 reconnect first request: tools/list

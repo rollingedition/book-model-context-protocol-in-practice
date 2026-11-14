@@ -1,4 +1,6 @@
-"""record_return asks the person who opened a returned parcel what they found, in a form a resolver asks for."""
+"""record_return asks the person who opened a returned parcel what they found, through a form that a resolver builds
+and sends. The point rests on the three answer lines, accept, decline and cancel, and on the error a client without
+an elicitation callback gets, which names a missing capability rather than a tool failure."""
 import asyncio
 from typing import Annotated, Literal
 
@@ -8,13 +10,13 @@ from mcp.types import ElicitResult
 from pydantic import BaseModel, Field
 
 server = MCPServer("shop-returns", version="0.5.0")
-Reason = Literal["damaged in transit", "wrong item sent", "missing part", "arrived late", "changed mind"]
+Reason = Literal["damaged in transit", "wrong item sent", "missing part", "arrived late", "changed mind"]   # the refund policy's five reasons
 
 
 class Inspection(BaseModel):          # the form: a flat object with primitive fields only
     reason: Reason = Field(description="The refund policy's reason that fits what you found")
     restock: bool = Field(description="The item can go back on sale")
-    note: str | None = Field(default=None, max_length=200, description="Anything the refund should say")
+    note: str | None = Field(default=None, max_length=200, description="Anything the refund should say")   # a default makes the field optional on the form
 
 
 def ask(order_id: str, sku: str) -> Elicit[Inspection]:
@@ -22,7 +24,7 @@ def ask(order_id: str, sku: str) -> Elicit[Inspection]:
 
 
 @server.tool(description="Record what a returned item was like when its parcel was opened. The user fills in a form.")
-def record_return(order_id: str, sku: str, found: Annotated[ElicitationResult[Inspection], Resolve(ask)]) -> str:
+def record_return(order_id: str, sku: str, found: Annotated[ElicitationResult[Inspection], Resolve(ask)]) -> str:   # the SDK runs ask(), sends the form as an input request, and fills found in on the retry
     if isinstance(found, AcceptedElicitation):
         return f"Recorded: {found.data.reason}, restock {found.data.restock}."
     return ("The user declined: don't record this return, and don't ask again." if found.action == "decline"

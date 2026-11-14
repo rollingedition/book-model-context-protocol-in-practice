@@ -1,4 +1,3 @@
 result type: input_required
 input request confirm: elicitation/create form
 message: Refund 180.00 on order O-2289? It is above the policy limit, so a lead must confirm it.
-request state sealed: True

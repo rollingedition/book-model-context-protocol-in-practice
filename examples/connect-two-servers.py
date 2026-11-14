@@ -1,5 +1,6 @@
-"""The host opens one Client per server, under its own prefixes, and each connection settles its own revision. The
-SDK's ClientSessionGroup, given the same shop server, settles on a 2025 revision. A reconnect reuses the cached era."""
+"""Two clients under their own prefixes each settle their own revision, and the SDK's ClientSessionGroup settles the
+shop's server on an older one. A reconnect that reuses the cached era sends no server/discover probe, which the
+example asserts before it prints the first request."""
 import asyncio
 import pathlib
 
@@ -24,12 +25,14 @@ async def main() -> None:
             session = await group.connect_to_server(support_shop.server_params(base_url))
             print("ClientSessionGroup protocol revision:", session.protocol_version)
         params = wire.relay(support_shop.server_params(base_url), log=str(LOG))
+        # mode is the revision the first connection settled on, prior_discover its cached era: no probe is sent
         async with Client(params, mode=revision, prior_discover=era) as again:
             await again.list_tools()
             print("reconnect protocol revision:", again.protocol_version)
+    # "out" marks the messages the client sent, as the relay logged them
     methods = [message.get("method") for direction, message in wire.read_trace(str(LOG)) if direction == "out"]
-    print("reconnect sent server/discover:", "server/discover" in methods)
-    print("reconnect first request:", methods[0])
+    assert "server/discover" not in methods      # the reconnect never probed, because the era was cached
+    print("reconnect first request:", methods[0])        # index 0: the first message the reconnect sent
     LOG.unlink()
 
 asyncio.run(main())

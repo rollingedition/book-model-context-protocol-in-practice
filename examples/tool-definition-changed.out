@@ -5,6 +5,5 @@ partner 2.1.0, track_parcel: changed
 released sha256: 0cc3d81c42b57e95
 fields changed: description
 title the user sees: Track a parcel
-readOnlyHint: True
 shop's tools: unchanged
 tools the model sees: find_orders, get_order_status, quote_refund, issue_refund, check_stock

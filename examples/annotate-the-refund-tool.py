@@ -1,5 +1,6 @@
 """What each tool's annotations tell a host, with the specification's defaults filled in where a hint is missing, and
-whether the server keeps issue_refund's idempotent promise when the same call arrives twice."""
+whether the server keeps issue_refund's idempotent promise when the same call arrives twice. The point rests on the two
+refund pairs: issue_refund returns one refund both times, while two posts to the endpoint make two."""
 import asyncio
 
 import httpx2
@@ -7,6 +8,7 @@ from mcp import Client
 
 from lib import loopback, shop_api, shop_tools
 
+# the specification's defaults, used for any hint a tool leaves out
 DEFAULTS = {"read_only_hint": False, "destructive_hint": True, "idempotent_hint": False, "open_world_hint": True}
 
 
@@ -35,6 +37,7 @@ async def main() -> None:
             print("issue_refund first refund:", first.structured_content["refund_id"])
             print("issue_refund second refund:", again.structured_content["refund_id"])
 
+        # the amount the quote for KG-1050 gave, posted straight to the endpoint
         twice = [httpx2.post(f"{base_url}/refunds", headers={"X-API-Key": shop_api.DEMO_API_KEY},
                              json={"order_id": "O-2415", "amount": "23.98"}).json()["refund_id"] for _ in range(2)]
         print("post_refunds first refund:", twice[0])

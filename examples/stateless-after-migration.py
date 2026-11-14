@@ -1,4 +1,5 @@
-"""Port the 2025 server's per-connection quote to SDK 2.x unchanged, then the way the pinned revision asks: a handle."""
+"""Ports the 2025 server's per-connection quote to SDK 2.x unchanged, then with the handle the pinned revision asks for.
+The prose's point rests on the session-keyed failure, the count of session objects, and the handle's refund line."""
 import asyncio
 import os
 
@@ -16,8 +17,8 @@ sessions_seen = set()
 
 @server.tool(description="Quote a refund for a whole order, for issue_refund to refund.")
 def quote_refund(order_id: str, ctx: Context) -> str:
-    sessions_seen.add(id(ctx.session))
-    quotes[ctx.session] = chapter3["quote_refund"].fn(order_id, sku="KG-1050")
+    sessions_seen.add(id(ctx.session))       # each request gets its own session object at the pinned revision
+    quotes[ctx.session] = chapter3["quote_refund"].fn(order_id, sku="KG-1050")   # chapter 3's quote needs a SKU; the port pins one
     return f"Quoted {quotes[ctx.session].amount}."
 
 
@@ -26,7 +27,7 @@ def issue_refund(ctx: Context) -> shop_tools.Refund:
     sessions_seen.add(id(ctx.session))
     if ctx.session not in quotes:
         raise ToolError("There is no open quote in this session. Call quote_refund first.")
-    return chapter3["issue_refund"].fn(quotes.pop(ctx.session).quote_id)
+    return chapter3["issue_refund"].fn(quotes.pop(ctx.session).quote_id)   # pop: a quote is used once
 
 
 async def main() -> None:

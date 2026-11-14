@@ -1,6 +1,6 @@
-"""A confused deputy: a customer signs in to a host as C-0127 and asks the shop's server about C-0116's orders and
-refunds one. Chapter 3's tools do it with the server's own key; `lib.owned_shop` takes the customer from the token's
-subject and refuses."""
+"""A confused deputy: a customer signs in to a host as C-0127 and asks the shop's server about C-0116's orders, refunds
+one, and then spends C-0116's quote. Chapter 3's tools do it with the server's own key; `lib.owned_shop` takes the
+customer from the token's subject, so it lists only C-0127's orders and refuses the rest."""
 import json
 import os
 import re
@@ -19,21 +19,24 @@ def call(url: str, token: str, name: str, **arguments) -> dict:
 
 
 def show(label: str, result: dict, key: str) -> None:
+    # the refusal's first sentence, after the error's name; quote ids are random, so they print as Q-...
     refused = re.sub(r"Q-[0-9a-f]{10}", "Q-...", result.get("error", "").split(": ", 1)[-1].split(". ")[0])
     print(f"{label}:", result.get(key) or f"refused ({refused})")
 
 
 with auth_server.serve() as issuer, loopback.serve(shop_api.create_app()) as api_url:
     os.environ.update(shop_api.server_env(api_url))                    # the server runs in this process
-    for owned, server in [(False, "chapter 3"), (True, "token's subject")]:
+    for owned, server in [(False, "chapter 3"), (True, "token's subject")]:   # chapter 3's tools, then lib.owned_shop
         with owned_shop.serve(issuer.url, owned=owned) as url:
             mine = auth_server.mint(issuer.url, url, SCOPES, subject=SIGNED_IN)
+            # chapter 3's find_orders takes the customer as an argument; the owned version takes none
             found = call(url, mine, "find_orders", **({} if owned else {"customer_id": OTHER}))
             print(f"{server}, find_orders lists orders of:", found["customer_id"])
             quote = call(url, mine, "quote_refund", order_id=OTHERS_ORDER)
             show(f"{server}, quote_refund on {OTHERS_ORDER}", quote, "amount")
             if "quote_id" in quote:
                 show(f"{server}, issue_refund", call(url, mine, "issue_refund", quote_id=quote["quote_id"]), "status")
+            # C-0116 gets a quote for its own order, which C-0127 then tries to spend
             theirs = call(url, auth_server.mint(issuer.url, url, SCOPES, subject=OTHER), "quote_refund",
                           order_id=OTHERS_ORDER)
             spent = call(url, mine, "issue_refund", quote_id=theirs["quote_id"])

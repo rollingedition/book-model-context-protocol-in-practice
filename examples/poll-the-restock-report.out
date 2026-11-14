@@ -1,6 +1,4 @@
 statuses: working then completed
-more than one working poll: True
-messages count up: True
 last message: recounted 64 of 64 SKUs
 result type: CallToolResult
 skus recounted: 64

@@ -1,4 +1,4 @@
-"""One task outlives its ttlMs and is purged; another is cancelled, and stops at the tool's next check."""
+"""Show the two ways a task ends early: its time to live runs out and the server purges it, or the client cancels it and the report stops at its next check. The -32602 from the purged task and the final status of the cancelled report are the lines the prose rests on."""
 import asyncio
 import os
 
@@ -11,6 +11,7 @@ from lib import loopback, restock, shop_api, tasks
 clock = tasks.Clock()                                     # fake time: moves only when the example says so
 first_steps, second_steps = restock.Steps(), restock.Steps()   # a report starts a product only when allowed
 pending = [first_steps, second_steps]                     # one per call, in call order
+# a task expires one minute after it was created, counted on the fake clock
 server = MCPServer("shop-support", version="0.7.0",
                    extensions=[tasks.Tasks({"restock_report"}, ttl_ms=60_000, clock=clock)])
 
@@ -18,6 +19,7 @@ server = MCPServer("shop-support", version="0.7.0",
 @server.tool(title="Restock report")
 async def restock_report(below: int = 30) -> restock.RestockReport:
     """Recount every product's stock and list those with fewer than `below` units. Slow: runs as a task."""
+    # calls arrive in order, so each report takes the next gate
     return await restock.run(below, steps=pending.pop(0))
 
 
@@ -28,7 +30,7 @@ async def main() -> None:
             first = await client.session.call_tool("restock_report", allow_claimed=True)
             print("first, ttl ms:", first.ttl_ms)         # first_steps allows no product, so it stays working
             print("first, first poll:", (await tasks.get(client.session, first.task_id))["status"])
-            clock.advance(61)
+            clock.advance(61)                             # 61 seconds: past the one-minute time to live
             try:
                 await tasks.get(client.session, first.task_id)
             except MCPError as error:

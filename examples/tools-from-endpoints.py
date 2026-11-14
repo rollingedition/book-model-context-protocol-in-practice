@@ -1,5 +1,6 @@
-"""Two tool lists for the same API: one tool per endpoint, as a generator writes them, and the shop's five task tools.
-Then ticket T-0024's refund both ways: the endpoint tool takes whatever amount the model sends; the task tools quote it."""
+"""Two tool lists for the same API, one tool per endpoint as a generator writes them and the shop's five task tools, then
+ticket T-0024's refund both ways. The point rests on two printed lines: the endpoint tool records the amount the model
+sent, and quote_refund's amount is the server's own figure, which the code asserts is within the limit."""
 import asyncio
 
 import httpx2
@@ -15,7 +16,7 @@ async def main() -> None:
         async with Client(shop_tools.server_params(base_url)) as client:
             print("protocol revision:", client.protocol_version)
             for tool in (await client.list_tools()).tools:
-                print("task tool:", tool.name, tool.input_schema.get("required", []))
+                print("task tool:", tool.name, tool.input_schema.get("required", []))  # .get: no "required" key if none
 
             # T-0024: "please refund the aluminium muffin tray on o2415". The endpoint tool post_refunds forwards
             # its arguments to POST /refunds, so the amount is whatever the model sends, such as the order's total.
@@ -29,6 +30,7 @@ async def main() -> None:
                                                             "reason": "arrived damaged"})
             print("quote_refund amount:", quote.structured_content["amount"])
             print("quote_refund within limit:", quote.structured_content["within_limit"])
+            assert quote.structured_content["within_limit"]  # the muffin tray's line is under the refund policy's limit
 
 
 asyncio.run(main())

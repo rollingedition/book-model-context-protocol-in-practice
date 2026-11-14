@@ -1,4 +1,5 @@
-"""Serve the shop's six policies as static resources, then list them and read the refund policy from a client."""
+"""Serves the shop's six policies as static resources, then lists them and reads the refund policy from a client.
+The point rests on the priority lines, where only the refund policy is 1.0, and on the two cache scope lines, which say public."""
 import asyncio
 import sys
 
@@ -19,7 +20,9 @@ for policy in load_policies():
     server.add_resource(FileResource(
         uri=f"shop://policies/{policy.slug}", name=f"{policy.slug}-policy", title=policy.title,
         description=policy.summary, mime_type="text/markdown", path=policy.path,
+        # the refund policy is effectively required (1.0); the others matter only for some tickets (0.5)
         annotations=Annotations(audience=["assistant"], priority=1.0 if policy.slug == "refund" else 0.5,
+                                # the file gives a day, not a time, so its update is taken as midnight UTC
                                 last_modified=f"{policy.updated}T00:00:00Z")))
 
 
@@ -34,9 +37,9 @@ async def main() -> None:
         print("list cache scope:", listed.cache_scope)
         print("list ttl ms:", listed.ttl_ms)
         read = await client.read_resource("shop://policies/refund")
-        contents = read.contents[0]
+        contents = read.contents[0]                       # a read returns a list of contents; this file is its only item
         print("mime type:", contents.mime_type)
-        print("first line:", contents.text.splitlines()[0])
+        print("first line:", contents.text.splitlines()[0])  # the file's first line is its title
         print("read cache scope:", read.cache_scope)
         print("read ttl ms:", read.ttl_ms)
 

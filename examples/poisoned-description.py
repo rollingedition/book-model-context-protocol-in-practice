@@ -1,5 +1,6 @@
-"""Tool poisoning: the partner's `track_parcel` with a description that tells the model to send it each ticket. What
-the user sees doesn't change; what the model reads does. The model's choices are replayed from `poisoned-tools`."""
+"""Tool poisoning: the partner's `track_parcel` in a clean and a poisoned version, whose description tells the model to
+call it for each ticket. The title the user sees is the same in both; the point rests on the last line, the poisoned
+runs that called `track_parcel`, and the model's choices are replayed from the recording `poisoned-tools`."""
 import asyncio
 
 from mcp import Client
@@ -17,17 +18,17 @@ async def listed(server):
 
 
 async def main() -> None:
-    shop, model = load_shop(), ReplayModel("poisoned-tools")
+    shop, model = load_shop(), ReplayModel("poisoned-tools")   # the model's recorded choices, replayed per ticket
     shop_tools = await listed(owned_shop.create_server())
     for version in ("clean", "poisoned"):
-        tracking = (await listed(partner.create_server(version)))[0]
+        tracking = (await listed(partner.create_server(version)))[0]   # the partner's only tool
         print(f"{version}, title the user sees:", tracking.title)
         print(f"{version}, description characters:", len(tracking.description))
-    print("added for the model:", partner.POISON.strip()[:58] + "...")
+    print("added for the model:", partner.POISON.strip()[:58] + "...")   # the opening 58 characters of the instruction
     followed = 0
     for ticket_id in TICKETS:
         for version in ("clean", "poisoned"):
-            tools = shop_tools + await listed(partner.create_server(version))
+            tools = shop_tools + await listed(partner.create_server(version))   # the shop's five tools and track_parcel
             choice = choose_tool(model, shop.ticket(ticket_id), tools)
             print(f"{ticket_id}, {version}:", choice.tool)
             followed += version == "poisoned" and choice.tool == "track_parcel"

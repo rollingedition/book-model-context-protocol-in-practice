@@ -1,5 +1,6 @@
-"""The support host's Client ID Metadata Document, the checks an authorization server makes on it, and the SDK's
-client using its URL as the client ID, with and without the authorization server's support."""
+"""The support host's Client ID Metadata Document, the checks an authorization server makes on it, and the SDK's client
+sending its URL as the client ID, with and without the authorization server's support. The point rests on the
+`client_id sent` line and on the fallback's error line, which show what the SDK did in each case."""
 import asyncio
 
 from mcp.client.auth import OAuthRegistrationError
@@ -18,7 +19,7 @@ for label, url, candidate in [
     print(f"document {label}:", auth_server.document_problem(url, candidate) or "accepted")
 try:
     oauth_client.provider("http://127.0.0.1/mcp", browser=oauth_client.ScriptedBrowser(),
-                          client_metadata_url="http://localhost:4280/client.json")
+                          client_metadata_url="http://localhost:4280/client.json")   # the SDK checks the scheme when it's built
 except ValueError:
     print("SDK given an http client ID: ValueError")
 
@@ -34,5 +35,5 @@ async def connect(**server_options) -> None:
             print("without metadata document support:", group.exceptions[0])
 
 
-asyncio.run(connect())
-asyncio.run(connect(advertise_cimd=False))
+asyncio.run(connect())                                  # the shop's server advertises metadata document support
+asyncio.run(connect(advertise_cimd=False))              # a server that doesn't, so the SDK registers instead

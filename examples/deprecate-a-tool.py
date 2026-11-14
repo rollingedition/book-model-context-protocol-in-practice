@@ -1,4 +1,6 @@
-"""Retire find_orders for find_orders_v2 over three releases, watched by a listening client and a caching client."""
+"""Retire find_orders in favour of find_orders_v2 over three releases, watched by a listening client and a caching
+client. The prose's point rests on the caching client's list and on the last line, the error the old name returns
+after the window."""
 import asyncio
 
 from mcp import Client
@@ -12,7 +14,7 @@ from lib.testing import shop_api_here
 
 bus, tools = InMemorySubscriptionBus(), confirmations.chapter3_tools()
 server = MCPServer("shop-support", version="0.11.0", tools=list(tools.values()), subscriptions=bus,
-                   cache_hints={"tools/list": CacheHint(ttl_ms=60_000, scope="public")})   # short, for the change
+                   cache_hints={"tools/list": CacheHint(ttl_ms=60_000, scope="public")})   # a minute: short while a change is under way
 old = tools["find_orders"]
 
 
@@ -37,15 +39,15 @@ async def main() -> None:
         async with Client(base_url + "/mcp") as listening, Client(base_url + "/mcp") as cached:
             listing, _ = await cached.list_tools(), await listening.list_tools()     # both cache release 1's list
             print("release 1:", f"{len(listing.tools)} tools, ttlMs {listing.ttl_ms}")
-            async with listening.listen(tools_list_changed=True) as changes:
-                server.add_tool(find_orders_v2)                                       # release 2
+            async with listening.listen(tools_list_changed=True) as changes:   # a stream that carries list-change events
+                server.add_tool(find_orders_v2)                                       # release 2: the replacement first
                 await replace_find_orders(old.fn, "Deprecated: use find_orders_v2. " + old.description)
                 print("event:", type(await anext(changes)).__name__)
             print("listening client sees:", ", ".join(t.name for t in (await listening.list_tools()).tools))
             print("cached client sees:", ", ".join(t.name for t in (await cached.list_tools()).tools))
             during = await cached.call_tool("find_orders", {"customer_id": "C-0127"})
             print("find_orders during the window:", "tool error" if during.is_error else "result")
-            await replace_find_orders(retired, "Retired: use find_orders_v2.")         # release 3
+            await replace_find_orders(retired, "Retired: use find_orders_v2.")         # release 3: the old name now errors
             after = await cached.call_tool("find_orders", {"customer_id": "C-0127"})
             print("find_orders after the window:", after.content[0].text)
 

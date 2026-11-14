@@ -1,5 +1,6 @@
-"""Consent: the host runs the shop's reads on its own list, and asks, with the exact arguments, before a refund above
-the limit (which the shop's server then asks about too) and before any partner call, whatever its annotations say."""
+"""Consent: the host runs the shop's reads from its own list, and asks, with the exact arguments, before a refund above
+the limit (which the shop's server then asks about too) and before any partner call, whatever the partner's annotations
+say. The `decisions logged` line records each choice, and the partner's call is the one that is not made."""
 import asyncio
 import json
 import os
@@ -17,13 +18,14 @@ TICKET = load_shop().ticket("T-0028")                           # from C-0127, a
 
 
 def user(request: host_guard.Request) -> bool:
-    shown = re.sub(r"Q-[0-9a-f]{10}", "Q-...", json.dumps(request.arguments))[:60]
+    shown = re.sub(r"Q-[0-9a-f]{10}", "Q-...", json.dumps(request.arguments))[:60]   # the first 60 characters
     print(f"  host asks: {request.server}/{request.tool} {shown}...")
-    return {"issue_refund": True, "track_parcel": False}[request.tool]     # the scripted user's answers
+    # the scripted user: yes to the refund, no to the partner
+    return {"issue_refund": True, "track_parcel": False}[request.tool]
 
 
 async def lead(context, params) -> ElicitResult:                 # the server's own question, to the same user
-    print("  server asks:", params.message.split("?")[0] + "?")
+    print("  server asks:", params.message.split("?")[0] + "?")        # the question, without what follows it
     return ElicitResult(action="accept", content={"release": True})
 
 
@@ -32,11 +34,13 @@ async def main(url: str, token: str) -> None:
     http = httpx2.AsyncClient(headers={"Authorization": f"Bearer {token}"})
     async with Client(streamable_http_client(url, http_client=http), elicitation_callback=lead) as shop, \
             Client(partner.create_server()) as other:
-        print("track_parcel readOnlyHint:", (await other.list_tools()).tools[0].annotations.read_only_hint)
+        # the partner's claim about its own tool, which the gate never reads
+        assert (await other.list_tools()).tools[0].annotations.read_only_hint is True
         quote_id = (await shop.call_tool("quote_refund", {"order_id": "O-1928"})).structured_content["quote_id"]
         for client, server, tool, arguments in [
                 (shop, "shop", "get_order_status", {"order_id": "O-2476"}),
                 (shop, "shop", "issue_refund", {"quote_id": quote_id}),
+                # a placeholder tracking number; the note carries the whole ticket, as a poisoned description asks
                 (other, "partner", "track_parcel", {"tracking_number": "FX-00000000", "note": TICKET.body})]:
             ran = gate.allows(server, tool, arguments) and await client.call_tool(tool, arguments)
             print(f"{server}/{tool}:", "ran" if ran else "not called")

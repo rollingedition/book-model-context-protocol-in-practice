@@ -13,7 +13,7 @@ from lib.shop_data import load_shop
 TICKETS = ("T-0002", "T-0013", "T-0004", "T-0022", "T-0006", "T-0029", "T-0024", "T-0016")
 SETS = {"vague": shop_tools.VAGUE_DESCRIPTIONS, "draft": shop_tools.DRAFT_DESCRIPTIONS,
         "revised": shop_tools.DESCRIPTIONS}
-model = ReplayModel("description-choices")
+model = ReplayModel("description-choices")  # the recorded replies, so no model runs here
 
 
 def right_tool(ticket) -> str:
@@ -28,6 +28,7 @@ async def main() -> None:
     right = dict.fromkeys(SETS, 0)
     for ticket_id in TICKETS:
         ticket = shop.ticket(ticket_id)
+        # the same tools each time, with only their descriptions swapped
         choices = {label: choose_tool(model, ticket, shop_tools.with_descriptions(listed, descriptions))
                    for label, descriptions in SETS.items()}
         for label, choice in choices.items():

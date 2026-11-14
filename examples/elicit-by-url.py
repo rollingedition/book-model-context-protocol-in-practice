@@ -1,5 +1,6 @@
-"""pay_refund sends the support lead to the payment provider's page to connect their account. URL mode keeps the
-sign-in out of the client, and accept means only that the user agreed to open the page."""
+"""pay_refund sends the support lead to the payment provider's page to connect an account, through URL mode, so the
+sign-in stays out of the client. The point rests on the after-accept line, which still asks, and the after-sign-in
+line, which completes only once the provider has recorded the flow as finished."""
 import asyncio
 import secrets
 
@@ -15,7 +16,7 @@ finished: set[str] = set()     # flows the payment provider reports finished; it
 
 @server.tool(description="Pay out a released refund through the shop's payment provider, by its refund_id.")
 def pay_refund(refund_id: str, ctx: Context) -> str | InputRequiredResult:
-    flow = ctx.request_state or secrets.token_urlsafe(16)    # the server's own ID for this flow, carried in requestState
+    flow = ctx.request_state or secrets.token_urlsafe(16)    # the server's own ID for this flow, carried in requestState; 16 random bytes, so it can't be guessed
     if flow in finished:
         return f"Paid {refund_id} through the payment provider"
     answer = (ctx.input_responses or {}).get("connect")
@@ -35,11 +36,11 @@ async def main() -> None:
         first = await call()
         request = first.input_requests["connect"].params
         print("first call:", first.result_type, request.mode)
-        print("url:", request.url.rsplit("/", 1)[0] + "/…")
+        print("url:", request.url.rsplit("/", 1)[0] + "/…")   # cut before the last slash, so the flow's ID isn't printed
         accepted = {"connect": ElicitResult(action="accept")}     # the scripted user agrees to open the page
         second = await call(first.request_state, accepted)
         print("after accept:", second.result_type, second.input_requests["connect"].params.mode)
-        finished.add(request.url.rsplit("/", 1)[1])               # the lead signs in on the provider's page
+        finished.add(request.url.rsplit("/", 1)[1])               # the flow's ID is what follows the last slash; the provider records it when the lead signs in
         third = await call(second.request_state, accepted)
         print("after sign-in:", third.result_type, third.content[0].text)
 

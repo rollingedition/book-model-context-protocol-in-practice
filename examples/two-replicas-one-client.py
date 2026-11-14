@@ -1,4 +1,5 @@
-"""Two replicas of chapter 5's refund server: a confirmation needs a shared key and a shared store to complete once."""
+"""Runs two replicas of chapter 5's refund server through three kinds of shared state, and replays one confirmation across them.
+The point rests on the retry and replay lines: each shared kind of state removes one way the second replica fails."""
 import asyncio
 import re
 import sys
@@ -17,6 +18,7 @@ async def outcome(call) -> str:                                       # refund s
         result = await call
     except MCPError as error:
         return f"error {error.error.code} {error.error.message}"
+    # keeps only the error's first sentence, which names the cause
     text = result.content[0].text.split(". ")[0] if result.is_error else result.structured_content["status"]
     return re.sub(r"Q-[0-9a-f]{10}", "Q-…", text)                    # quote IDs are random
 
@@ -29,10 +31,12 @@ async def refund_across(label: str, env: dict) -> None:
                 "order_id": "O-1873"})).structured_content["status"] for c in (on_a, on_b)]))
             quoted = await on_a.call_tool("quote_refund", {"order_id": "O-2289"})       # above the policy's limit
             args = {"quote_id": quoted.structured_content["quote_id"]}
+            # allow_input_required lets the server answer with an input request, not a result, when it needs confirmation
             first = await on_a.session.call_tool("issue_refund", args, allow_input_required=True)   # asks on a
+            # the answer goes back with the request state the server sealed, which the retry must open
             answer = dict(input_responses={"confirm": YES}, request_state=first.request_state)
             print(f"{label} retry on b:", await outcome(on_b.session.call_tool("issue_refund", args, **answer)))
-            if shared_state.STORE_VARIABLE in env:                    # the same answer again, sent to replica a
+            if shared_state.STORE_VARIABLE in env:                    # only the shared-store run sends the answer a second time
                 print(f"{label} replay on a:", await outcome(on_a.session.call_tool("issue_refund", args, **answer)))
 
 

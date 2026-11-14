@@ -1,4 +1,5 @@
-"""The shop's server declares the Tasks extension; a client that declares it too is served, one that doesn't is refused."""
+"""Declare the Tasks extension on the shop's server, then show what a client gets with it and without it: both declarations, and the
+Missing Required Client Capability error a client without it gets from the call and from the task method. The prose's point rests on those two errors."""
 import asyncio
 import json
 import os
@@ -9,6 +10,7 @@ from mcp.shared.exceptions import MCPError
 
 from lib import loopback, restock, shop_api, tasks, wire
 
+# only restock_report answers with a task; the server's other tools answer as usual
 server = MCPServer("shop-support", version="0.7.0", extensions=[tasks.Tasks({"restock_report"})])
 
 
@@ -31,12 +33,15 @@ async def main() -> None:
                 await plain.call_tool("restock_report")
             except MCPError as error:
                 print("client without it:", error.error.code, error.error.message)
+                # the specification's field, which lists the extensions the client lacked
                 print("required:", json.dumps(error.error.data["requiredCapabilities"]))
             try:
                 await tasks.get(plain.session, "any-task-id")       # the task methods check the declaration too
             except MCPError as error:
                 print("tasks/get without it:", error.error.code)
+    # the first tools/list the client sent, as the wire trace recorded it
     sent = next(e["request"] for e in wire.read_http_trace("declare.jsonl") if e["request"]["method"] == "tools/list")
+    # at this revision a client declares its capabilities in the _meta of each request it sends
     print("client declares:", json.dumps(sent["params"]["_meta"]["io.modelcontextprotocol/clientCapabilities"]))
 
 

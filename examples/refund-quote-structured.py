@@ -1,5 +1,6 @@
-"""quote_refund returns a pydantic model, so the SDK publishes its output schema and returns structuredContent. A tool
-that returns a bare string gets a {"result": ...} wrapper instead."""
+"""quote_refund returns a pydantic model, so the SDK publishes its output schema and returns structuredContent; a tool
+that returns a bare string gets a {"result": ...} wrapper instead. The point rests on the bare structured content line,
+and the quote's within-limit flag and text block, which the code asserts."""
 import asyncio
 import json
 
@@ -28,8 +29,13 @@ async def main() -> None:
             print("structured content:", json.dumps(shown))
             print("amount:", quote.structured_content["amount"])
             print("within limit:", quote.structured_content["within_limit"])
+            assert quote.structured_content["within_limit"] is False
+            # the lifetime is in seconds; the prose gives it in minutes
             print("quote lifetime minutes:", quote.structured_content["expires_in_seconds"] // 60)
-            print("text block is the same JSON:", json.loads(quote.content[0].text) == quote.structured_content)
+            # the text block a client that reads only text gets, parsed back to JSON
+            same_json = json.loads(quote.content[0].text) == quote.structured_content
+            print("text block is the same JSON:", same_json)
+            assert same_json
 
     async with Client(bare) as client:                  # in-process: no wire needed to read a schema
         tool = (await client.list_tools()).tools[0]
