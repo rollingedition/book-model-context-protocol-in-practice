@@ -8,4 +8,3 @@ tool error span status: ERROR
 tool error span error.type: tool_error
 in-memory spans: server/discover, test find_orders, tools/call find_orders, tools/call find_orders, tools/list
 in-memory server span parents: none, test find_orders
-pinned semconv lists server/discover: False

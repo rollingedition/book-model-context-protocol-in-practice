@@ -1,5 +1,5 @@
 """The host attaches the shop's policies that the server marks for the assistant at a high priority, and the model never
-chooses them. The second read of the refund policy is answered from the client's cache, so the trace holds one read."""
+chooses them. The second read of the refund policy is answered from the client's cache, so only the first reaches the trace, which the last printed line counts."""
 import asyncio
 import pathlib
 

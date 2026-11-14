@@ -1,5 +1,6 @@
-"""Replay chapter 10's queue run (the recording ticket-runs) through the support host, check each reply's promises
-against the host's call log, and show what a one-sentence change to a tool description does to the replay."""
+"""Replay chapter 10's queue run, the recording ticket-runs, through the support host, and check each reply's promise
+against the host's call log. The prose's point rests on the refund lines, which compare refunds issued with replies
+that promise one, and on the last line, which shows what a one-sentence rewording does to the replay."""
 import asyncio
 
 from lib import queue_replay, shop_tools, ticket_host
@@ -17,13 +18,15 @@ async def main() -> None:
     tickets = {ticket.ticket_id: ticket for ticket in load_shop().tickets}
     runs = await queue_replay.replay_queue()
     print("tickets replayed:", len(runs))
-    print("T-0009 tools:", " then ".join(turn.tool for turn in runs["T-0009"].calls))
+    print("T-0009 tools:", " then ".join(turn.tool for turn in runs["T-0009"].calls))   # its calls, in order
     print("refunds issued:", sum(queue_replay.refunded(run) for run in runs.values()))
+    # the phrase check from chapter 10, a rule of thumb: see the module's docstring for what it misses
     promised = [ticket_id for ticket_id, run in runs.items() if ticket_host.promises_refund(run.answer)]
+    # a promise with no refund behind it: no issue_refund call in the run returned a result
     unbacked = [ticket_id for ticket_id in promised if queue_replay.unbacked_refund(runs[ticket_id])]
     print("replies that promise a refund:", len(promised))
     print("of which no call made:", len(unbacked))
-    for tag in ("issue_refund", "quote_refund"):
+    for tag in ("issue_refund", "quote_refund"):           # the tickets tagged with each refund tool
         group = [t for t in tickets.values() if t.expected_tool == tag]
         print(f"{tag} tickets flagged:", f"{sum(t.ticket_id in unbacked for t in group)} of {len(group)}")
     print("flagged:", ", ".join(unbacked))
