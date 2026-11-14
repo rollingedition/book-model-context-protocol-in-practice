@@ -19,10 +19,10 @@ async def main() -> None:
     statuses = [p["status"] for p in polls]
     # dict.fromkeys drops repeated statuses but keeps their order, so each status is listed once
     print("statuses:", " then ".join(dict.fromkeys(statuses)))
-    assert statuses.count("working") > 1
+    assert statuses.count("working") > 1, statuses
     # the second word of "recounted N of 64 SKUs" is N
     counted = [int(p["statusMessage"].split()[1]) for p in polls if "statusMessage" in p]
-    assert counted == sorted(counted)
+    assert counted == sorted(counted), counted
     print("last message:", polls[-1]["statusMessage"])
     print("result type:", type(result).__name__)
     report = result.structured_content

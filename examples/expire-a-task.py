@@ -1,4 +1,4 @@
-"""Show the two ways a task ends early: its time to live runs out and the server purges it, or the client cancels it and the report stops at its next check. The -32602 after 61 seconds, and the cancelled status after 2 of 64 SKUs, are the lines the prose rests on."""
+"""Show the two ways a task ends early: its time to live runs out and the server purges it, or the client cancels it and the report stops at its next check. The -32602 from the purged task and the final status of the cancelled report are the lines the prose rests on."""
 import asyncio
 import os
 

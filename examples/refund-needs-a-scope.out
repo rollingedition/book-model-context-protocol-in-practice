@@ -4,7 +4,6 @@ tools/list cacheScope: private
 get_order_status: 200
 issue_refund: 403
 challenge: Bearer error="insufficient_scope", scope="refunds:write"
-challenge has resource_metadata: True
 issue_refund named get_order_status in Mcp-Name: 400 -32020
 issue_refund with Mcp-Name in base64: 403
 issue_refund at 2025-11-25: 403

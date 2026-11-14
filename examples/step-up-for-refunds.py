@@ -1,5 +1,6 @@
-"""Step-up: the SDK's client meets the refund's 403, asks the user again for the union of its scopes and
-`refunds:write`, and retries. A user who may not grant `refunds:write` gets a token without it, and the refund fails."""
+"""Step-up: the SDK's client meets the refund's 403, authorizes again for the union of its scopes and `refunds:write`, and
+retries. A user who may not grant `refunds:write` gets a token without it and a failed refund. The point rests on the
+refund status line for the lead and the refund failure line for the other user, with the scopes each authorization asked for."""
 import asyncio
 import os
 
@@ -7,6 +8,7 @@ from lib import auth_server, loopback, oauth_client, protected_shop, shop_api
 
 
 async def refund(label: str, user_scopes: tuple[str, ...]) -> None:
+    # user_scopes are the scopes this user may grant at consent; the scripted browser grants no more
     with auth_server.serve(user_scopes=user_scopes) as issuer, protected_shop.serve(issuer.url) as url:
         browser, storage = oauth_client.ScriptedBrowser(), oauth_client.MemoryStorage()
         async with oauth_client.connect(url, browser=browser, storage=storage) as client:
@@ -18,7 +20,7 @@ async def refund(label: str, user_scopes: tuple[str, ...]) -> None:
                 print(f"{label}, refund status:", result.structured_content["status"])
             except Exception as error:
                 print(f"{label}, refund failed:", type(error).__name__, error)
-        for number, asked in enumerate(browser.requests, start=1):
+        for number, asked in enumerate(browser.requests, start=1):          # one request per authorization, in order
             print(f"{label}, authorization {number} asked for:", asked["scope"])
         print(f"{label}, token scope:", auth_server.claims(storage.tokens.access_token)["scope"])
 

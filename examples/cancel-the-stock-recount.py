@@ -1,6 +1,6 @@
 """Cancels recount_stock after five progress reports by closing its response stream, and records where the server stopped.
-The server saw and tools/call stream lines are the ones the prose's point rests on: they show where the tool stopped and how
-the client ended the call."""
+The `server saw` and `tools/call stream` lines are the ones the prose's point rests on: they show where the tool
+stopped and how the client ended the call."""
 import os
 
 import anyio

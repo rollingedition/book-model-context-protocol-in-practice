@@ -1,5 +1,5 @@
 """Declare the Tasks extension on the shop's server, then show what a client gets with it and without it: both declarations, and the
--32021 error a client without it gets from the call and from the task method. The prose's point rests on those two errors."""
+Missing Required Client Capability error a client without it gets from the call and from the task method. The prose's point rests on those two errors."""
 import asyncio
 import json
 import os

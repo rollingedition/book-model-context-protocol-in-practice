@@ -1,4 +1,4 @@
-"""Call restock_report and keep the handle the server answers with at once, instead of waiting for the report. The tasks/get sent straight after finds the task working, which shows the server stored it before the handle left."""
+"""Call restock_report and keep the handle the server answers with at once, instead of waiting for the report. The tasks/get sent straight after is the line the prose rests on: it finds the task, so the server stored it before the handle left."""
 import asyncio
 import os
 
