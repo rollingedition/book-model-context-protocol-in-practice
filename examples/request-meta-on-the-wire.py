@@ -1,5 +1,5 @@
 """Show the _meta that every request and result carries, add one key of the shop's own, and send a request without
-the client's capabilities. The point rests on the request's keys and on the error code the bare request gets."""
+the client's capabilities. The prose's claims about the envelope come from the printed keys and the bare request's error code."""
 import asyncio
 import json
 import sys
@@ -17,7 +17,7 @@ async def main() -> None:
     Path("meta.jsonl").unlink(missing_ok=True)       # the relay appends to its log
     with loopback.serve(shop_api.create_app()) as base_url:
         server = StdioServerParameters(command=COMMAND[0], args=COMMAND[1:], env=shop_api.server_env(base_url))
-        # the relay logs every line the client and server exchange, so the byte counts below are of lines as sent
+        # the relay logs every line the client and server exchange, so the byte counts are of lines as sent
         async with Client(wire.relay(server, log="meta.jsonl"),
                           # the name and version the SDK sends as clientInfo in _meta; the server must not rely on them
                           client_info=Implementation(name="shop-host", version="0.1.0")) as client:

@@ -1,6 +1,5 @@
 """shop-support, the chapter 2 server, offers one tool, one resource and one prompt. Run bare, the file starts it as a
-client and prints what it discovers; the point rests on the three lists at the end, which the client reads without
-knowing their names in advance."""
+client, which prints what it discovers: the tools, resources and prompts lines are the ones the prose reads."""
 import asyncio
 import os
 import sys
@@ -56,5 +55,5 @@ async def main() -> None:
 
 
 if __name__ == "__main__":
-    # With --serve this file is the server the client above launches; run bare, it is the client.
+    # With --serve this file is the server the client launches; run bare, it is the client.
     server.run() if "--serve" in sys.argv else asyncio.run(main())

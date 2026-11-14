@@ -1,5 +1,5 @@
 """Fetch order O-2476 from the shop's API, then through shop-support's tool over Streamable HTTP, and count the cost.
-The point rests on the bytes of the tool call against the API call, and on the requests each kind of setup sends."""
+The prose's comparison comes from the byte totals and the request counts the script prints."""
 import asyncio
 import os
 import runpy

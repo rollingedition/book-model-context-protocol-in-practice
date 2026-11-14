@@ -1,6 +1,5 @@
 """Call list_tools() twice on each of two servers, one that sets no cache hint and one with a five-minute public hint,
-and count the tools/list requests that reach each. The point rests on the counts: the cached server gets one request
-for two calls, and two when the second call bypasses the cache."""
+and count the tools/list requests that reach each; the prose reads the three counts."""
 import asyncio
 import sys
 from pathlib import Path

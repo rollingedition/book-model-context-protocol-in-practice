@@ -1,5 +1,5 @@
 """Ask shop-support for a revision it doesn't implement, read its -32022 error, and retry with the newest revision both
-sides list. The point rests on the error code, the versions in its data and the retry's tool list."""
+sides list. The prose reads the error code, the versions in its data and the retry's tool list from the printed lines."""
 import sys
 
 from mcp import Client, StdioServerParameters
@@ -11,7 +11,7 @@ COMMAND = [sys.executable, "list-what-the-server-offers.py", "--serve"]
 UNKNOWN = "2099-01-01"                       # stands for any revision this server doesn't implement
 
 try:
-    # the SDK's client checks the mode when it is built, so this raises before any process starts or anything is sent
+    # the SDK's client checks the mode when it is built, so this raises before anything is sent
     Client(StdioServerParameters(command=COMMAND[0], args=COMMAND[1:]), mode=UNKNOWN)
 except ValueError as refused:
     print("client refuses:", type(refused).__name__)

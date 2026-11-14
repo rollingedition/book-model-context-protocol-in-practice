@@ -1,5 +1,5 @@
 """Start the shop's existing HTTP API on loopback and call it three ways: with its key, without it, and for an order
- that doesn't exist. The point rests on the status codes, which show the API refuses a caller it can't identify."""
+ that doesn't exist. The point rests on the `without key` line, which shows the API refuses a caller it can't identify."""
 import httpx2
 
 from lib import loopback, shop_api
@@ -13,7 +13,7 @@ print("orders:", len(shop.orders))
 print("tickets:", len(shop.tickets))
 
 with loopback.serve(shop_api.create_app()) as base_url:  # serves on 127.0.0.1 at a free port until the block ends
-    # the API checks this header; DEMO_API_KEY is the key the shop's data accepts
+    # the API checks this header; DEMO_API_KEY is the key the shop's API accepts
     response = httpx2.get(f"{base_url}/orders/O-2476", headers={"X-API-Key": shop_api.DEMO_API_KEY})
     order = response.json()
     print("with key:", response.status_code)

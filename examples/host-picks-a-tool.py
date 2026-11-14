@@ -1,6 +1,4 @@
-"""The book's host loop shows three tickets and the server's tools to a model, and calls the tool the model chooses.
-
-The model's replies are a recording (examples/data/recorded/pick-a-tool/), made with recordings/pick_a_tool.py."""
+"""The book's host loop shows three tickets and the server's tools to a model, then calls the tool the model chooses, from recorded replies in examples/data/recorded/. The point rests on the three `tool` lines."""
 import asyncio
 import json
 import sys
@@ -29,7 +27,7 @@ async def main() -> None:
                 choice = choose_tool(model, ticket, tools)
                 print(f"{ticket_id} tool:", choice.tool or "none")
                 if choice.tool is None:  # the model answered in words, so there is no call to make
-                    print(f"{ticket_id} reply:", choice.reply[:72] + "…")  # the first 72 characters
+                    print(f"{ticket_id} reply:", choice.reply[:72] + "…")  # a reply can run long, so the output shows only its opening
                     continue
                 print(f"{ticket_id} order id:", choice.arguments.get("order_id"))
                 result = await client.call_tool(choice.tool, choice.arguments)

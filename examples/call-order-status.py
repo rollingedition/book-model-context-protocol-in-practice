@@ -15,7 +15,7 @@ SHOP_HOST = Implementation(name="shop-host", version="0.1.0")  # the name the se
 async def main() -> None:
     with loopback.serve(shop_api.create_app()) as base_url:
         env = {"SHOP_API_URL": base_url, "SHOP_API_KEY": shop_api.DEMO_API_KEY}  # the only two variables the server reads
-        # the server file sits beside this one, so the relative path works from the examples folder
+        # relative to the examples folder, where examples run, so the server file is found
         params = StdioServerParameters(command=sys.executable, args=["order-status-server.py", "--serve"], env=env)
         async with Client(params, client_info=SHOP_HOST) as client:
             print("protocol revision:", client.protocol_version)
