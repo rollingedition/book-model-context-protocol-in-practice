@@ -4,7 +4,7 @@ chapter_id: migrate-from-2025
 
 # Migrate a 2025-era server
 
-By the end of this chapter you can move a Model Context Protocol server written for the 2025 revisions and the Python SDK's 1.x line onto the specification at revision {{out:serve-two-revisions:auto revision}} and `mcp` {{version:mcp}}. You'll find what it depends on, remove its sessions, move it off the HTTP+SSE transport, replace sampling, roots, logging and Dynamic Client Registration, port the code, and serve clients of both eras while the old ones are still around.
+By the end of this chapter you can move a Model Context Protocol server written for the 2025 revisions and the Python SDK's 1.x line onto the specification at revision {{out:serve-two-revisions:auto revision}} and `mcp` {{version:mcp}}. Claims about the target hold at that revision and SDK version. You'll find what it depends on, remove its sessions, move it off the HTTP+SSE transport, replace sampling, roots, logging and Dynamic Client Registration, port the code, and serve clients of both eras while the old ones remain.
 
 Every earlier chapter built the server for [the shop](#the-shop), this book's one case, as `shop-support` for the pinned revision from the start. Most teams don't start there. They have a server that a 2025-era team wrote against revisions 2025-03-26 to 2025-11-25 with SDK 1.x, and hosts that still speak those revisions. This chapter is the only one that teaches the 2025 protocol, and only as the thing you migrate from.
 
@@ -64,7 +64,7 @@ async def save_restock_report(ctx: Context) -> str:
 server.run(transport="sse" if os.environ.get("SHOP_OLD_HOSTS") else "streamable-http")   # HTTP+SSE: the 2024 transport
 ```
 
-The listing is the 2025-era shop server, and a shared module for this chapter, `lib.legacy`, holds it as text with the host's OAuth setup and the rules for finding each dependency. It is shown and scanned, never run. SDK 1.x and SDK 2.x are both the `mcp` distribution, so one environment holds only one of them, and the examples' environment pins 2.x. Every example in the chapter runs the ported server on 2.x instead, or reads the listing. `shop_calls` stands for the calls to the shop's API that chapter 3's tools make, and the listing doesn't show it.
+The listing is the 2025-era shop server, and a shared module for this chapter, `lib.legacy`, holds it as text with the host's OAuth setup and the rules for finding each dependency. It is shown and scanned, never run. SDK 1.x and SDK 2.x are both the `mcp` distribution, so one environment holds only one of them, and the examples' environment pins 2.x. Every example runs the ported server on 2.x instead, or reads the listing. `shop_calls` stands for the calls to the shop's API that chapter 3's tools make, and the listing doesn't show it.
 
 ## Inventory what the old server depends on {#inventory-2025-features}
 
@@ -170,7 +170,7 @@ Two rules from the pinned revision matter while registration lingers. A client M
 
 ## Port the code from SDK 1.x to 2.x {#sdk-1-to-2}
 
-The sections so far changed what the shop's server does. The SDK changes that [Inventory what the old server depends on](#inventory-2025-features) found are a separate job, and they stop the old file from starting on 2.x at all. Two facts shape that job. The first is that the 1.x line is still maintained. The first 2.x release and a 1.x release both shipped on 2026-07-28, the day of the pinned revision, and the 1.x release on 2026-09-07, `{{out:scan-a-2025-server:written for}}`, is a "maintenance release of the 1.x line" ([PyPI](https://pypi.org/pypi/mcp/json); [release notes](https://github.com/modelcontextprotocol/python-sdk/releases/tag/v1.30.0)). The migration guide says the 1.x line keeps receiving critical bug fixes and security patches, and nobody has published an end date ([migration guide](https://py.sdk.modelcontextprotocol.io/v2/migration/)). The second fact is that both lines are the one `mcp` distribution, so a deployment runs one or the other, never both.
+The sections so far changed what the shop's server does. The SDK changes that [Inventory what the old server depends on](#inventory-2025-features) found are a separate job, and they stop the old file from starting on 2.x. Two facts shape that job. The first is that the 1.x line is still maintained. The first 2.x release and a 1.x release both shipped on 2026-07-28, the day of the pinned revision, and the 1.x release on 2026-09-07, `{{out:scan-a-2025-server:written for}}`, is a "maintenance release of the 1.x line" ([PyPI](https://pypi.org/pypi/mcp/json); [release notes](https://github.com/modelcontextprotocol/python-sdk/releases/tag/v1.30.0)). The migration guide says the 1.x line keeps receiving critical bug fixes and security patches, and nobody has published an end date ([migration guide](https://py.sdk.modelcontextprotocol.io/v2/migration/)). The second fact is that both lines are the one `mcp` distribution, so a deployment runs one or the other, never both.
 
 The guide lists the breaks. Those that touch a server like the shop's: `mcp.server.fastmcp.FastMCP` is `mcp.server.mcpserver.MCPServer`; `McpError` is `MCPError(code, message, data)`; fields are snake_case (`input_schema`, `is_error`); the HTTP client is `httpx2`, not `httpx`; `streamablehttp_client` is gone, in favour of `streamable_http_client`; `host`, `port`, `stateless_http` and `json_response` moved from the constructor to `run()` and `streamable_http_app()`; `instructions` is no longer the second positional argument; `MCP_*` environment variables are no longer read; the WebSocket transport is removed; and `ctx.log` takes `data`, not `message` ([migration guide](https://py.sdk.modelcontextprotocol.io/v2/migration/)).
 
@@ -182,7 +182,7 @@ The import failed with a message that names the rename and the import to use ins
 
 The constructor as written didn't fail. In 2.x the second positional argument is `title` (`mcp/server/mcpserver/server.py`), so the server's instructions became its title. A client saw the title "{{out:port-to-sdk-2:as written title}}" and no instructions (`{{out:port-to-sdk-2:as written instructions}}`), and a host that puts a server's instructions in the model's context would silently lose them. With `instructions=` by keyword, the ported server's title is {{out:port-to-sdk-2:ported title}} and its instructions arrive. The port number moves to the last line, as `server.run(transport="streamable-http", port=8000)`.
 
-The silent breaks share a shape: an argument that still type-checks, or a setting that is no longer read, like the `MCP_*` environment variables. Find them by reading the guide's list against the code, not by waiting for errors, and check what a client sees with a test like the one that builds the server twice.
+The silent breaks share a shape: an argument that still type-checks, or a setting nothing reads, like the `MCP_*` environment variables. Find them by reading the guide's list against the code, not by waiting for errors, and check what a client sees with a test like the one that builds the server twice.
 
 **Working rule:** Keep a 2025-era server pinned to `mcp<2` until its port passes its tests, then port in one change: the imports and renames the errors point at, then each silent break from the migration guide, checked with a test against what a client sees. Pin the 2.x release exactly afterwards, and treat each 2.x release as a change to test, since the SDK's warnings and defaults move between releases.
 
@@ -222,7 +222,7 @@ A migration fails in the gaps between the two eras: one client sees the old serv
 
 **Reading the earliest removal as the end date.** A team that plans to move off sampling or roots on 2027-07-28 has no margin, because the first revision released on or after that date may remove them. A team that reads the date as the day they disappear may also drop a feature its SDK keeps supporting for longer. Plan by the clients you serve: the registry gives the earliest date, and your logs give the real one.
 
-**Working rule:** Before the ported server takes traffic, test four things through the real proxy path: a 2025 client completes a confirmation, a 2026 client completes the same one, a 2025 session survives a deployment, and the version header reaches the server. Then watch requests by era, 404s by client and every deprecation warning, until the 2025 count reaches zero.
+**Working rule:** Prove the port through the real proxy path before it takes traffic, with four tests: a 2025 client completes a confirmation, a 2026 client completes the same one, a 2025 session survives a deployment, and the version header reaches the server. Then watch requests by era, 404s by client and every deprecation warning, until the 2025 count reaches zero.
 
 ## Decisions this chapter made {#migrate-from-2025-decisions}
 

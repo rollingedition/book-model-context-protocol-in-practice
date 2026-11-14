@@ -4,7 +4,7 @@ chapter_id: mcp-end-to-end
 
 # MCP end to end
 
-By the end of this chapter you can put an existing HTTP API behind a Model Context Protocol server over stdio, call its tool from a client, read every message the two exchange, and let a model choose the tool through a small host. Every example runs on one machine, against the Python SDK, `mcp` {{version:mcp}}, and revision {{out:call-order-status:protocol revision}} of the specification.
+By the end of this chapter you can put an existing HTTP API behind a Model Context Protocol server over stdio, call its tool from a client, read every message the two exchange, and let a model choose the tool through a small host. Every example runs on one machine, and what the chapter says holds for revision {{out:call-order-status:protocol revision}} of the specification and for `mcp` {{version:mcp}}, the Python SDK.
 
 A customer writes to Fernhill Supply, a small online shop for kitchen and garden goods, to ask where an order is. The answer lives in Fernhill Supply's systems, not in the ticket, so a model in the support team's host can answer only if something lets it look the order up. This chapter takes on that problem, and [Meet the shop and its API](#the-shop) introduces the shop in full.
 
@@ -139,7 +139,7 @@ The shop's first server works on one machine. Taken into production, the same fe
 
 **Other languages lag or lead.** The MCP documentation lists official SDKs by tier. Tier 1 is TypeScript, Python, C#, Go, Rust and Ruby, and the tiers change over time ([SDKs](https://modelcontextprotocol.io/docs/sdk)). A host in one language and a server in another can implement a revision's details differently, and the wire is where you settle which one is right.
 
-**Working rule:** Before a stdio server goes to production, check three things on the machine that will launch it: nothing but JSON-RPC reaches standard output, every variable the server needs is passed explicitly, and the server answers `server/discover` within 10 seconds of starting. Keep the server's standard error in your logs, because that is where its real errors go.
+**Working rule:** On the machine that launches a stdio server in production, check three things: nothing but JSON-RPC reaches standard output, every variable the server needs is passed explicitly, and the server answers `server/discover` within 10 seconds of starting. Keep the server's standard error in your logs, because that is where its real errors go.
 
 ## Decisions this chapter made {#mcp-end-to-end-decisions}
 
@@ -152,5 +152,5 @@ The shop's first server works on one machine. Taken into production, the same fe
 - **Servers launch with `sys.executable` and an explicit `env=`,** and credentials travel in the environment, never on the wire.
 - **Traces come from a relay on a real stdio subprocess,** because the in-process client sends no JSON-RPC.
 - **The host loop's prompt and parsing are the book's own code,** and examples replay recordings of Qwen3-4B-Instruct-2507, an open model run on the CPU.
-- **A recording answers only the messages it saw.** A changed prompt, ticket or tool list fails the replay instead of returning a stale reply.
+- **A recording answers only the exact messages it saw.** A changed prompt, ticket or tool list fails the replay instead of returning a stale reply.
 - **No consent step in this chapter,** a departure from the specification that we accept only for a read-only tool on a server the shop runs. Consent arrives in [Ask for consent before side effects](#consent-before-side-effects).
