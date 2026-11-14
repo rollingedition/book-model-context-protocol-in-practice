@@ -36,11 +36,11 @@ async def main() -> None:
         first = await call()
         request = first.input_requests["connect"].params
         print("first call:", first.result_type, request.mode)
-        print("url:", request.url.rsplit("/", 1)[0] + "/…")
+        print("url:", request.url.rsplit("/", 1)[0] + "/…")   # cut before the last slash, so the flow's ID isn't printed
         accepted = {"connect": ElicitResult(action="accept")}     # the scripted user agrees to open the page
         second = await call(first.request_state, accepted)
         print("after accept:", second.result_type, second.input_requests["connect"].params.mode)
-        finished.add(request.url.rsplit("/", 1)[1])               # the lead signs in on the provider's page
+        finished.add(request.url.rsplit("/", 1)[1])               # the flow's ID is what follows the last slash; the provider records it when the lead signs in
         third = await call(second.request_state, accepted)
         print("after sign-in:", third.result_type, third.content[0].text)
 

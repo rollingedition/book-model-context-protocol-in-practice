@@ -1,5 +1,6 @@
-"""Send issue_refund's retry wrong four ways: a changed requestState, an answer with no state, the state with other
-arguments, and a replay of a retry that worked. The seal stops two; the server's own checks stop the other two."""
+"""Send issue_refund's retry wrongly, then rightly, then again: a changed requestState, an answer with no state, and a
+state with other arguments; then an honest retry, and its replay. The seal refuses the changed and the mismatched state,
+the tool asks again for the answer with no state, and its own once-only record refuses the replay."""
 import asyncio
 
 from mcp import Client, MCPError
@@ -32,6 +33,7 @@ async def main() -> None:
                       for order in ("O-2289", "O-1145")]
             first = await client.session.call_tool("issue_refund", {"quote_id": quotes[0]}, allow_input_required=True)
             state = first.request_state
+            # swaps the character at index 20 for another, so the seal no longer matches the token
             changed = state[:20] + ("A" if state[20] != "A" else "B") + state[21:]
             await retry(client, "one character changed", quotes[0], changed)
             await retry(client, "answer without state", quotes[0], None)
