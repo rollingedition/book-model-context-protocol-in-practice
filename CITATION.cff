@@ -8,7 +8,7 @@ abstract: 'Tools and data for agents, for engineers who know APIs: what MCP adds
 url: https://rollingedition.com/model-context-protocol-in-practice
 repository-code: https://github.com/rollingedition/book-model-context-protocol-in-practice
 license:
-- CC-BY-4.0
+- CC-BY-NC-4.0
 - MIT
 preferred-citation:
   type: book
