@@ -17,10 +17,12 @@ term = "Model Context Protocol"
 aliases = ["MCP"]
 definition = "The Model Context Protocol (MCP) is how an application that uses a model gets tools and data from programs it didn't write."
 section = "mcp-end-to-end"
+wikidata = "Q133436854"
 example = "call-order-status"
 
 [concepts.relations]
 implemented-by = [{ to = "mcp", versions = ">=2.0" }]
+same-as = ["https://rollingedition.com/concepts/ai-agents/model-context-protocol"]
 
 [[concepts]]
 id = "stdio"
@@ -43,6 +45,9 @@ section = "let-a-model-choose"
 context = "ai-agents"
 example = "host-picks-a-tool"
 
+[concepts.relations]
+broader = ["model-context-protocol/host"]
+
 # Chapter 02
 
 [[concepts]]
@@ -52,6 +57,9 @@ definition = "The host is the application the user works in."
 section = "host-client-server"
 context = "model-context-protocol"
 
+[concepts.relations]
+same-as = ["https://rollingedition.com/concepts/ai-agents/mcp-host"]
+
 [[concepts]]
 id = "client"
 term = "client"
@@ -60,6 +68,9 @@ section = "host-client-server"
 context = "model-context-protocol"
 example = "list-what-the-server-offers"
 
+[concepts.relations]
+same-as = ["https://rollingedition.com/concepts/ai-agents/mcp-client"]
+
 [[concepts]]
 id = "server"
 term = "server"
@@ -67,6 +78,9 @@ definition = "A server exposes capabilities, such as tools, and knows nothing el
 section = "host-client-server"
 context = "model-context-protocol"
 example = "list-what-the-server-offers"
+
+[concepts.relations]
+same-as = ["https://rollingedition.com/concepts/ai-agents/mcp-server"]
 
 [[concepts]]
 id = "capability"
@@ -96,9 +110,11 @@ definition = "A tool is a named action with a description and an input schema, a
 section = "tools-model-chooses"
 context = "ai-agents"
 example = "three-primitives-side-by-side"
+agrees = [{ book = "business-intelligence-with-agents", definition = "A tool is a function the model may ask the code to run, by replying with a JSON object that names it and gives its arguments." }]
 
 [concepts.relations]
 contrasts-with = ["model-context-protocol/resource"]
+same-as = ["https://rollingedition.com/concepts/search-and-recommendation/tool"]
 
 [[concepts]]
 id = "resource"
@@ -178,6 +194,7 @@ definition = "A tool execution error is an ordinary result with `isError` set to
 section = "tool-errors"
 context = "ai-agents"
 example = "tool-error-versus-protocol-error"
+agrees = [{ book = "business-intelligence-with-agents", definition = "The MCP specification reports a tool execution error as a result with isError set, with \"actionable feedback that language models can use to self-correct\"" }]
 
 [concepts.relations]
 contrasts-with = ["protocol-error"]
@@ -190,6 +207,10 @@ definition = "A tool's annotations tell the host what a call will do before it's
 section = "tool-annotations"
 context = "model-context-protocol"
 example = "annotate-the-refund-tool"
+
+[concepts.relations]
+part-of = ["ai-agents/tool-definition"]
+same-as = ["https://rollingedition.com/concepts/ai-agents/tool-annotation"]
 
 [[concepts]]
 id = "read-only-hint"
@@ -247,6 +268,9 @@ context = "model-context-protocol"
 definition = "`structuredContent`: the result's data as JSON that a program can read without parsing text"
 section = "structured-output"
 example = "refund-quote-structured"
+
+[concepts.relations]
+same-as = ["https://rollingedition.com/concepts/ai-agents/structured-content"]
 
 # Chapter 04
 
@@ -358,6 +382,9 @@ definition = "Progress is MCP's answer to a long call: the server reports how fa
 section = "stream-progress"
 example = "progress-on-stock-recount"
 
+[concepts.relations]
+part-of = ["core-protocol"]
+
 [[concepts]]
 id = "sticky-sessions"
 term = "sticky sessions"
@@ -371,6 +398,7 @@ id = "dns-rebinding"
 term = "DNS rebinding"
 definition = "With DNS rebinding, an attacker's domain can be made to resolve to 127.0.0.1 after the page loads, so the browser treats the local server as part of the attacker's site."
 section = "validate-origin"
+wikidata = "Q5205813"
 example = "reject-a-foreign-origin"
 
 # Chapter 07
@@ -403,6 +431,9 @@ context = "model-context-protocol"
 definition = "a task: the call's work, whose status the client asks for as often as the server suggests, and whose result waits on the server until the client fetches it"
 section = "tasks-and-extensions"
 example = "start-a-restock-report"
+
+[concepts.relations]
+contrasts-with = ["progress"]
 
 [[concepts]]
 id = "task-handle"
@@ -442,6 +473,9 @@ term = "core protocol"
 context = "model-context-protocol"
 definition = "The core protocol is what every client and server must implement."
 section = "negotiate-an-extension"
+
+[concepts.relations]
+contrasts-with = ["extension"]
 
 [[concepts]]
 id = "mcp-apps"
@@ -525,6 +559,7 @@ id = "trust-boundary"
 term = "trust boundary"
 definition = "A trust boundary is a place where data or authority passes from one party to another that shouldn't take it on faith."
 section = "trust-boundaries"
+wikidata = "Q7848145"
 
 [[concepts]]
 id = "token-passthrough"
@@ -538,6 +573,7 @@ id = "confused-deputy"
 term = "confused deputy"
 definition = "In the classic sense, a confused deputy is a program that holds authority of its own, takes a name from its caller, and uses its authority on that name where the caller had none."
 section = "confused-deputy"
+wikidata = "Q5160310"
 example = "confused-deputy-refund"
 
 [[concepts]]
@@ -598,6 +634,7 @@ context = "large-language-models"
 definition = "Indirect prompt injection is the general name for data that carries instructions: text the application retrieves, here a customer's ticket, contains instructions that the model follows, and those instructions can decide which tools it calls"
 section = "untrusted-tool-output"
 example = "ticket-injection"
+agrees = [{ book = "agent-harnesses", definition = "The threat is indirect prompt injection: text that an application retrieves from outside can carry instructions, and a model that reads that text may follow them." }]
 
 # Chapter 10
 
