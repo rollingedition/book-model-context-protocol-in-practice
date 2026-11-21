@@ -585,6 +585,13 @@ definition = "In implicit poisoning, one tool's metadata steers the agent to a d
 section = "tool-poisoning"
 
 [[concepts]]
+id = "capability-laundering"
+term = "capability laundering"
+context = "ai-agents"
+definition = "Capability laundering is hiding what a tool's code can do behind a description that leaves it out"
+section = "trust-boundaries"
+
+[[concepts]]
 id = "indirect-prompt-injection"
 term = "indirect prompt injection"
 context = "large-language-models"
