@@ -21,6 +21,7 @@ example = "call-order-status"
 
 [concepts.relations]
 implemented-by = [{ to = "mcp", versions = ">=2.0" }]
+same-as = ["https://rollingedition.com/concepts/ai-agents/model-context-protocol"]
 
 [[concepts]]
 id = "stdio"
@@ -52,6 +53,9 @@ definition = "The host is the application the user works in."
 section = "host-client-server"
 context = "model-context-protocol"
 
+[concepts.relations]
+same-as = ["https://rollingedition.com/concepts/ai-agents/mcp-host"]
+
 [[concepts]]
 id = "client"
 term = "client"
@@ -60,6 +64,9 @@ section = "host-client-server"
 context = "model-context-protocol"
 example = "list-what-the-server-offers"
 
+[concepts.relations]
+same-as = ["https://rollingedition.com/concepts/ai-agents/mcp-client"]
+
 [[concepts]]
 id = "server"
 term = "server"
@@ -67,6 +74,9 @@ definition = "A server exposes capabilities, such as tools, and knows nothing el
 section = "host-client-server"
 context = "model-context-protocol"
 example = "list-what-the-server-offers"
+
+[concepts.relations]
+same-as = ["https://rollingedition.com/concepts/ai-agents/mcp-server"]
 
 [[concepts]]
 id = "capability"
@@ -96,9 +106,11 @@ definition = "A tool is a named action with a description and an input schema, a
 section = "tools-model-chooses"
 context = "ai-agents"
 example = "three-primitives-side-by-side"
+agrees = [{ book = "business-intelligence-with-agents", definition = "A tool is a function the model may ask the code to run, by replying with a JSON object that names it and gives its arguments." }]
 
 [concepts.relations]
 contrasts-with = ["model-context-protocol/resource"]
+same-as = ["https://rollingedition.com/concepts/search-and-recommendation/tool"]
 
 [[concepts]]
 id = "resource"
@@ -178,6 +190,7 @@ definition = "A tool execution error is an ordinary result with `isError` set to
 section = "tool-errors"
 context = "ai-agents"
 example = "tool-error-versus-protocol-error"
+agrees = [{ book = "business-intelligence-with-agents", definition = "The MCP specification reports a tool execution error as a result with isError set, with \"actionable feedback that language models can use to self-correct\"" }]
 
 [concepts.relations]
 contrasts-with = ["protocol-error"]
@@ -190,6 +203,9 @@ definition = "A tool's annotations tell the host what a call will do before it's
 section = "tool-annotations"
 context = "model-context-protocol"
 example = "annotate-the-refund-tool"
+
+[concepts.relations]
+same-as = ["https://rollingedition.com/concepts/ai-agents/tool-annotation"]
 
 [[concepts]]
 id = "read-only-hint"
@@ -247,6 +263,9 @@ context = "model-context-protocol"
 definition = "`structuredContent`: the result's data as JSON that a program can read without parsing text"
 section = "structured-output"
 example = "refund-quote-structured"
+
+[concepts.relations]
+same-as = ["https://rollingedition.com/concepts/ai-agents/structured-content"]
 
 # Chapter 04
 
@@ -598,6 +617,7 @@ context = "large-language-models"
 definition = "Indirect prompt injection is the general name for data that carries instructions: text the application retrieves, here a customer's ticket, contains instructions that the model follows, and those instructions can decide which tools it calls"
 section = "untrusted-tool-output"
 example = "ticket-injection"
+agrees = [{ book = "agent-harnesses", definition = "The threat is indirect prompt injection: text that an application retrieves from outside can carry instructions, and a model that reads that text may follow them." }]
 
 # Chapter 10
 
