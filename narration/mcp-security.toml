@@ -23,3 +23,9 @@ say = "Of the shop's {{out:ticket-injection:tickets}} tickets, the code takes th
 
 [examples.consent-gate]
 say = "The code connects the host to the shop's server, with a token for customer C-0127, and to the partner's server, and puts the host's consent gate in front of three calls: an order lookup, a refund above the policy limit on C-0127's own order O-1928, and a track parcel call whose note holds a whole ticket. A scripted user says yes to the refund, to the host and then to the server, and declines the partner's call. The partner's tool claims a read-only hint, and the gate asks anyway. The order lookup {{out:consent-gate:shop/get_order_status}} without a question, with the status {{out:consent-gate:shop/get_order_status status}}. The refund is asked about twice, first by the host with its arguments and then by the server, and {{out:consent-gate:shop/issue_refund}}, with the status {{out:consent-gate:shop/issue_refund status}}. The partner's call is asked about with the ticket text in its arguments, and is {{out:consent-gate:partner/track_parcel}}. The log reads: {{out:consent-gate:decisions logged}}."
+
+[terms]
+"arXiv:2611.23507" = "archive 2611 point 23507"
+"arXiv:2611.24025" = "archive 2611 point 24025"
+"arXiv:2611.23346" = "archive 2611 point 23346"
+"arXiv:2611.24839" = "archive 2611 point 24839"
