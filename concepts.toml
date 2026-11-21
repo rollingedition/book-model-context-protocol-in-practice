@@ -1,0 +1,654 @@
+# The terms this book defines, each quoted from the sentence that defines it (writing standards W-77 to W-80).
+
+context = "artificial-intelligence"
+
+# Protocol terms whose words mean something else in another field: a host, a server or a resource in MCP
+[[contexts]]
+id = "model-context-protocol"
+broader = "ai-agents"
+label = "Model Context Protocol"
+description = "Where a host, a client and a server are the roles the Model Context Protocol defines, and a tool, a resource and a prompt are its primitives."
+
+# Chapter 01
+
+[[concepts]]
+id = "mcp-protocol"
+term = "Model Context Protocol"
+aliases = ["MCP"]
+definition = "The Model Context Protocol (MCP) is how an application that uses a model gets tools and data from programs it didn't write."
+section = "mcp-end-to-end"
+example = "call-order-status"
+
+[concepts.relations]
+implemented-by = [{ to = "mcp", versions = ">=2.0" }]
+
+[[concepts]]
+id = "stdio"
+term = "stdio"
+aliases = ["stdio transport"]
+definition = "`server.run()` serves over stdio, where the client starts the server as a subprocess and the two exchange messages on standard input and output"
+section = "wrap-an-endpoint-as-a-tool"
+context = "model-context-protocol"
+example = "call-order-status"
+applies_to = ["mcp"]
+
+[concepts.relations]
+implemented-by = [{ to = "mcp", versions = ">=2.0" }]
+
+[[concepts]]
+id = "host-loop"
+term = "host loop"
+definition = "The book's host loop, `lib.host`, is a small host the book writes itself, so each step is visible."
+section = "let-a-model-choose"
+context = "ai-agents"
+example = "host-picks-a-tool"
+
+# Chapter 02
+
+[[concepts]]
+id = "host"
+term = "host"
+definition = "The host is the application the user works in."
+section = "host-client-server"
+context = "model-context-protocol"
+
+[[concepts]]
+id = "client"
+term = "client"
+definition = "A client is the host's connection to one server"
+section = "host-client-server"
+context = "model-context-protocol"
+example = "list-what-the-server-offers"
+
+[[concepts]]
+id = "server"
+term = "server"
+definition = "A server exposes capabilities, such as tools, and knows nothing else about the host."
+section = "host-client-server"
+context = "model-context-protocol"
+example = "list-what-the-server-offers"
+
+[[concepts]]
+id = "capability"
+term = "capability"
+definition = "A capability is something a client or server declares it supports, such as a server that offers tools or a client that can answer a request for input."
+section = "host-client-server"
+context = "model-context-protocol"
+example = "list-what-the-server-offers"
+
+[[concepts]]
+id = "primitive"
+term = "primitive"
+aliases = ["primitives"]
+definition = "A server's three primitives are its tools, resources and prompts"
+section = "choose-a-primitive"
+context = "model-context-protocol"
+example = "three-primitives-side-by-side"
+
+[concepts.relations]
+narrower = ["ai-agents/tool", "resource", "prompt"]
+
+[[concepts]]
+id = "tool"
+term = "tool"
+aliases = ["tools"]
+definition = "A tool is a named action with a description and an input schema, and the model decides whether to call it and with what"
+section = "tools-model-chooses"
+context = "ai-agents"
+example = "three-primitives-side-by-side"
+
+[concepts.relations]
+contrasts-with = ["model-context-protocol/resource"]
+
+[[concepts]]
+id = "resource"
+term = "resource"
+aliases = ["resources"]
+definition = "A resource is data a server exposes under a URI, and the application decides when to read it and what to do with it"
+section = "resources-application-chooses"
+context = "model-context-protocol"
+example = "three-primitives-side-by-side"
+
+[concepts.relations]
+contrasts-with = ["ai-agents/tool"]
+
+[[concepts]]
+id = "prompt"
+term = "prompt"
+aliases = ["prompts", "MCP prompt"]
+definition = "A prompt is a template of messages, with arguments, that the server defines and the user picks"
+section = "prompts-user-chooses"
+context = "model-context-protocol"
+example = "three-primitives-side-by-side"
+
+[[concepts]]
+id = "ttl"
+term = "TTL"
+aliases = ["ttlMs"]
+context = "model-context-protocol"
+definition = "`ttlMs`, how many milliseconds the result stays fresh, like HTTP's `max-age`"
+section = "cache-list-results"
+example = "cache-the-tool-list"
+
+[[concepts]]
+id = "cache-scope"
+term = "cache scope"
+aliases = ["cacheScope"]
+context = "model-context-protocol"
+definition = "`cacheScope`, either `\"public\"`, which a cache may share across callers, or `\"private\"`, which it MUST NOT share across authorization contexts"
+section = "cache-list-results"
+example = "cache-the-tool-list"
+
+# Chapter 03
+
+[[concepts]]
+id = "consent"
+term = "consent"
+definition = "Consent is the host asking the user before a call that changes something"
+section = "tasks-not-endpoints"
+context = "ai-agents"
+example = "annotate-the-refund-tool"
+
+[[concepts]]
+id = "handle"
+term = "handle"
+aliases = ["handles", "explicit handle"]
+definition = "a tool that needs state from an earlier call gets it as an explicit handle: one tool returns an ID, and the next takes it as an argument"
+section = "tasks-not-endpoints"
+context = "ai-agents"
+example = "refund-quote-structured"
+
+[[concepts]]
+id = "protocol-error"
+term = "protocol error"
+aliases = ["protocol errors"]
+definition = "A protocol error is a JSON-RPC error, for an unknown tool, a request that doesn't fit the `tools/call` schema, or a server failure."
+section = "tool-errors"
+context = "ai-agents"
+example = "tool-error-versus-protocol-error"
+
+[concepts.relations]
+contrasts-with = ["tool-execution-error"]
+
+[[concepts]]
+id = "tool-execution-error"
+term = "tool execution error"
+aliases = ["tool execution errors", "execution error"]
+definition = "A tool execution error is an ordinary result with `isError` set to true, for an API failure, an invalid input or a broken business rule."
+section = "tool-errors"
+context = "ai-agents"
+example = "tool-error-versus-protocol-error"
+
+[concepts.relations]
+contrasts-with = ["protocol-error"]
+
+[[concepts]]
+id = "tool-annotation"
+term = "tool annotation"
+aliases = ["tool annotations", "ToolAnnotations"]
+definition = "A tool's annotations tell the host what a call will do before it's made"
+section = "tool-annotations"
+context = "model-context-protocol"
+example = "annotate-the-refund-tool"
+
+[[concepts]]
+id = "read-only-hint"
+term = "readOnlyHint"
+aliases = ["read-only hint"]
+definition = "the tool doesn't change its environment"
+section = "tool-annotations"
+context = "model-context-protocol"
+example = "annotate-the-refund-tool"
+
+[concepts.relations]
+part-of = ["tool-annotation"]
+
+[[concepts]]
+id = "destructive-hint"
+term = "destructiveHint"
+aliases = ["destructive hint"]
+definition = "a tool that changes something may destroy or overwrite data, rather than only add to it"
+section = "tool-annotations"
+context = "model-context-protocol"
+example = "annotate-the-refund-tool"
+
+[concepts.relations]
+part-of = ["tool-annotation"]
+
+[[concepts]]
+id = "idempotent-hint"
+term = "idempotentHint"
+aliases = ["idempotent hint"]
+definition = "calling the tool again with the same arguments has no further effect"
+section = "tool-annotations"
+context = "model-context-protocol"
+example = "annotate-the-refund-tool"
+
+[concepts.relations]
+part-of = ["tool-annotation"]
+
+[[concepts]]
+id = "open-world-hint"
+term = "openWorldHint"
+aliases = ["open world hint"]
+definition = "the tool reaches entities outside a closed domain, such as the web"
+section = "tool-annotations"
+context = "model-context-protocol"
+example = "annotate-the-refund-tool"
+
+[concepts.relations]
+part-of = ["tool-annotation"]
+
+[[concepts]]
+id = "structured-content"
+term = "structured content"
+aliases = ["structuredContent"]
+context = "model-context-protocol"
+definition = "`structuredContent`: the result's data as JSON that a program can read without parsing text"
+section = "structured-output"
+example = "refund-quote-structured"
+
+# Chapter 04
+
+[[concepts]]
+id = "resource-annotation"
+term = "resource annotation"
+aliases = ["resource annotations"]
+context = "model-context-protocol"
+definition = "A resource's annotations are three hints the host may use or ignore"
+section = "policies-as-resources"
+example = "list-policy-resources"
+
+[[concepts]]
+id = "resource-template"
+term = "resource template"
+context = "model-context-protocol"
+definition = "A resource template names many resources with one URI template, written in the syntax of RFC 6570"
+section = "resource-templates"
+example = "order-resource-template"
+
+[[concepts]]
+id = "argument-completion"
+term = "argument completion"
+context = "model-context-protocol"
+definition = "Argument completion lets the host ask the server for suggestions while the user types."
+section = "argument-completion"
+example = "complete-order-ids"
+
+# Chapter 05
+
+[[concepts]]
+id = "elicitation"
+term = "elicitation"
+context = "model-context-protocol"
+definition = "elicitation: a structured question that a server sends and the client shows the user"
+section = "multi-round-trip-requests"
+example = "elicit-a-refund-reason"
+
+[concepts.relations]
+narrower = ["form-mode", "url-mode"]
+implemented-by = [{ to = "mcp", versions = ">=2.0" }]
+
+[[concepts]]
+id = "multi-round-trip-request"
+term = "Multi Round-Trip Request"
+context = "model-context-protocol"
+definition = "a Multi Round-Trip Request, a pattern in which one call can end with a question instead of a result"
+section = "multi-round-trip-requests"
+example = "refund-asks-to-confirm"
+
+[concepts.relations]
+implemented-by = [{ to = "mcp", versions = ">=2.0" }]
+
+[[concepts]]
+id = "input-request"
+term = "input request"
+context = "model-context-protocol"
+definition = "The server answers the call with an input request instead of a result, and the client calls again with the answer."
+section = "multi-round-trip-requests"
+example = "refund-asks-to-confirm"
+
+[[concepts]]
+id = "form-mode"
+term = "form mode"
+context = "model-context-protocol"
+definition = "In form mode, the server sends a message and a schema, the client renders a form, and the answer returns through the client."
+section = "elicitation-forms"
+example = "elicit-a-refund-reason"
+
+[concepts.relations]
+broader = ["elicitation"]
+
+[[concepts]]
+id = "url-mode"
+term = "URL mode"
+context = "model-context-protocol"
+definition = "In URL mode, the server sends the user to a web page, not a form"
+section = "elicitation-forms"
+example = "elicit-by-url"
+
+[concepts.relations]
+broader = ["elicitation"]
+
+[[concepts]]
+id = "request-state"
+term = "requestState"
+context = "model-context-protocol"
+definition = "`requestState` is an opaque string the client must send back."
+section = "return-an-input-request"
+example = "tampered-round-trip-state"
+
+# Chapter 06
+
+[[concepts]]
+id = "streamable-http"
+term = "Streamable HTTP"
+aliases = ["Streamable HTTP transport"]
+context = "model-context-protocol"
+definition = "For a server that many hosts share, the Model Context Protocol (MCP) defines a second transport, Streamable HTTP."
+section = "streamable-http"
+example = "serve-on-loopback"
+
+[[concepts]]
+id = "progress"
+term = "progress"
+aliases = ["notifications/progress"]
+context = "model-context-protocol"
+definition = "Progress is MCP's answer to a long call: the server reports how far it has got while the call runs"
+section = "stream-progress"
+example = "progress-on-stock-recount"
+
+[[concepts]]
+id = "sticky-sessions"
+term = "sticky sessions"
+aliases = ["sticky routing"]
+definition = "sticky sessions, which route every request carrying the same `Mcp-Session-Id` to the replica that held the session"
+section = "scale-without-sessions"
+example = "two-replicas-one-client"
+
+[[concepts]]
+id = "dns-rebinding"
+term = "DNS rebinding"
+definition = "With DNS rebinding, an attacker's domain can be made to resolve to 127.0.0.1 after the page loads, so the browser treats the local server as part of the attacker's site."
+section = "validate-origin"
+example = "reject-a-foreign-origin"
+
+# Chapter 07
+
+[[concepts]]
+id = "extension"
+term = "extension"
+context = "model-context-protocol"
+definition = "Tasks is an extension, an optional addition to the protocol that both sides must agree to use."
+section = "tasks-and-extensions"
+
+[concepts.relations]
+implemented-by = [{ to = "mcp", versions = ">=2.0" }]
+
+[[concepts]]
+id = "tasks-extension"
+term = "Tasks extension"
+context = "model-context-protocol"
+definition = "With the Tasks extension, the server answers the call at once with a handle to a task"
+section = "tasks-and-extensions"
+example = "start-a-restock-report"
+
+[concepts.relations]
+broader = ["extension"]
+
+[[concepts]]
+id = "task"
+term = "task"
+context = "model-context-protocol"
+definition = "a task: the call's work, whose status the client asks for as often as the server suggests, and whose result waits on the server until the client fetches it"
+section = "tasks-and-extensions"
+example = "start-a-restock-report"
+
+[[concepts]]
+id = "task-handle"
+term = "task handle"
+context = "model-context-protocol"
+definition = "A task's handle is a `CreateTaskResult`: a result whose `resultType` is `\"task\"` instead of `\"complete\"`."
+section = "start-a-task"
+example = "start-a-restock-report"
+
+[[concepts]]
+id = "task-lifetime"
+term = "task lifetime"
+context = "model-context-protocol"
+definition = "A task's lifetime is its `ttlMs`, counted from `createdAt`, or `null` for no limit, and the server may change it."
+section = "task-lifetime"
+example = "expire-a-task"
+
+[[concepts]]
+id = "terminal-status"
+term = "terminal status"
+context = "model-context-protocol"
+definition = "The `completed`, `failed` and `cancelled` statuses are terminal, and once a task reaches one, its state doesn't change"
+section = "poll-a-task"
+example = "poll-the-restock-report"
+
+[[concepts]]
+id = "extension-identifier"
+term = "extension identifier"
+context = "model-context-protocol"
+definition = "An extension's identifier is a vendor prefix, a slash and a name."
+section = "negotiate-an-extension"
+example = "declare-the-tasks-extension"
+
+[[concepts]]
+id = "core-protocol"
+term = "core protocol"
+context = "model-context-protocol"
+definition = "The core protocol is what every client and server must implement."
+section = "negotiate-an-extension"
+
+[[concepts]]
+id = "mcp-apps"
+term = "MCP Apps"
+context = "model-context-protocol"
+definition = "MCP Apps is an official extension that changes how a result is shown."
+section = "mcp-apps"
+
+[concepts.relations]
+broader = ["extension"]
+
+# Chapter 08
+
+[[concepts]]
+id = "authorization-server"
+term = "authorization server"
+definition = "an authorization server issues the tokens, either beside the MCP server or apart from it"
+section = "authorization"
+example = "discover-the-authorization-server"
+
+[[concepts]]
+id = "protected-resource-metadata"
+term = "Protected Resource Metadata"
+definition = "Protected Resource Metadata (RFC 9728), a JSON document that names the resource and lists at least one authorization server"
+section = "protected-resource-metadata"
+example = "discover-the-authorization-server"
+
+[concepts.relations]
+implemented-by = [{ to = "mcp", versions = ">=2.0" }]
+
+[[concepts]]
+id = "client-id-metadata-document"
+term = "Client ID Metadata Document"
+definition = "A Client ID Metadata Document makes the client ID a URL."
+section = "client-id-metadata-documents"
+example = "publish-client-metadata"
+
+[concepts.relations]
+implemented-by = [{ to = "mcp", versions = ">=2.0" }]
+
+[[concepts]]
+id = "pkce"
+term = "PKCE"
+aliases = ["Proof Key for Code Exchange"]
+definition = "PKCE binds the code to the client that asked for it."
+section = "authorization-code-with-pkce"
+example = "token-with-pkce"
+
+[concepts.relations]
+implemented-by = [{ to = "mcp", versions = ">=2.0" }]
+
+[[concepts]]
+id = "access-token"
+term = "access token"
+definition = "An access token is a bearer credential, so whoever holds it can present it."
+section = "token-audience"
+example = "wrong-audience-rejected"
+
+[[concepts]]
+id = "mix-up-attack"
+term = "mix-up attack"
+aliases = ["mix-up"]
+definition = "In a mix-up, an attacker's authorization server gets the host to start a flow with it, then sends the user's browser on to an honest authorization server."
+section = "validate-the-issuer"
+example = "mix-up-attack-blocked"
+
+[[concepts]]
+id = "step-up"
+term = "step-up"
+definition = "Step-up is the 403 from Scope tools by what the token allows and the client's answer to it: on `insufficient_scope`, the client authorizes again with the union of the scopes it asked for before and the scopes in the challenge, retries, and limits how many times it tries"
+section = "step-up-scopes"
+example = "step-up-for-refunds"
+
+[concepts.relations]
+implemented-by = [{ to = "mcp", versions = ">=2.0" }]
+
+# Chapter 09
+
+[[concepts]]
+id = "trust-boundary"
+term = "trust boundary"
+definition = "A trust boundary is a place where data or authority passes from one party to another that shouldn't take it on faith."
+section = "trust-boundaries"
+
+[[concepts]]
+id = "token-passthrough"
+term = "token passthrough"
+definition = "a server either accepts a token that was issued to someone else or forwards the token it received to the API behind it"
+section = "no-token-passthrough"
+example = "token-passthrough-rejected"
+
+[[concepts]]
+id = "confused-deputy"
+term = "confused deputy"
+definition = "In the classic sense, a confused deputy is a program that holds authority of its own, takes a name from its caller, and uses its authority on that name where the caller had none."
+section = "confused-deputy"
+example = "confused-deputy-refund"
+
+[[concepts]]
+id = "tool-definition"
+term = "tool definition"
+context = "ai-agents"
+definition = "A tool's definition is text from its server that the host passes to the model: its description, input schema and annotations."
+section = "tool-poisoning"
+example = "poisoned-description"
+
+[[concepts]]
+id = "tool-poisoning"
+term = "tool poisoning"
+context = "ai-agents"
+definition = "Tool poisoning puts instructions for the model into a tool's definition."
+section = "tool-poisoning"
+example = "poisoned-description"
+
+[[concepts]]
+id = "rug-pull"
+term = "rug pull"
+context = "ai-agents"
+definition = "a rug pull, where a server changes a definition after the user approved it"
+section = "tool-poisoning"
+example = "tool-definition-changed"
+
+[concepts.relations]
+broader = ["tool-poisoning"]
+
+[[concepts]]
+id = "shadowing"
+term = "shadowing"
+context = "ai-agents"
+definition = "shadowing, where one server's description changes how the model uses another server's tools"
+section = "tool-poisoning"
+
+[concepts.relations]
+broader = ["tool-poisoning"]
+
+[[concepts]]
+id = "implicit-poisoning"
+term = "implicit poisoning"
+context = "ai-agents"
+definition = "In implicit poisoning, one tool's metadata steers the agent to a different, more privileged tool, and the poisoned tool is never called."
+section = "tool-poisoning"
+
+[[concepts]]
+id = "indirect-prompt-injection"
+term = "indirect prompt injection"
+context = "large-language-models"
+definition = "Indirect prompt injection is the general name for data that carries instructions: text the application retrieves, here a customer's ticket, contains instructions that the model follows, and those instructions can decide which tools it calls"
+section = "untrusted-tool-output"
+example = "ticket-injection"
+
+# Chapter 10
+
+[[concepts]]
+id = "era"
+term = "era"
+context = "model-context-protocol"
+definition = "A client still learns its server's era: the pinned revision or a 2025 one."
+section = "one-client-per-server"
+example = "connect-two-servers"
+
+[[concepts]]
+id = "application-driven"
+term = "application-driven"
+context = "model-context-protocol"
+definition = "The specification calls resources application-driven: hosts decide how to use them, whether by letting the user pick, by their own heuristics, or by asking the model"
+section = "resources-in-context"
+example = "attach-a-policy-resource"
+
+[[concepts]]
+id = "progressive-discovery"
+term = "progressive discovery"
+context = "ai-agents"
+definition = "progressive discovery, a small search tool that returns definitions on demand"
+section = "build-a-host-in-production"
+
+# Chapter 11
+
+[[concepts]]
+id = "span"
+term = "span"
+definition = "an application creates spans, each a named, timed operation with attributes and a parent"
+section = "trace-with-opentelemetry"
+example = "trace-a-tool-call"
+
+[[concepts]]
+id = "tool-selection-accuracy"
+term = "tool-selection accuracy"
+aliases = ["top-1 accuracy"]
+context = "ai-agents"
+definition = "tool-selection accuracy: the share of cases in which the model's first call uses the tool a correct agent would use, often called top-1 accuracy"
+section = "tool-selection-accuracy"
+example = "tool-choice-accuracy"
+
+# Chapter 12
+
+[[concepts]]
+id = "earliest-removal"
+term = "earliest removal"
+context = "model-context-protocol"
+definition = "An earliest removal is the date when a feature becomes eligible to go, not when it goes."
+section = "inventory-2025-features"
+example = "scan-a-2025-server"
+
+[[concepts]]
+id = "dual-era"
+term = "dual-era"
+context = "model-context-protocol"
+definition = "a dual-era server, which serves both eras on the same endpoint"
+section = "serve-both-revisions"
+example = "serve-two-revisions"
