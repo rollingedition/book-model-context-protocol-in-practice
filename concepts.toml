@@ -17,6 +17,7 @@ term = "Model Context Protocol"
 aliases = ["MCP"]
 definition = "The Model Context Protocol (MCP) is how an application that uses a model gets tools and data from programs it didn't write."
 section = "mcp-end-to-end"
+wikidata = "Q133436854"
 example = "call-order-status"
 
 [concepts.relations]
@@ -43,6 +44,9 @@ definition = "The book's host loop, `lib.host`, is a small host the book writes 
 section = "let-a-model-choose"
 context = "ai-agents"
 example = "host-picks-a-tool"
+
+[concepts.relations]
+broader = ["model-context-protocol/host"]
 
 # Chapter 02
 
@@ -205,6 +209,7 @@ context = "model-context-protocol"
 example = "annotate-the-refund-tool"
 
 [concepts.relations]
+part-of = ["ai-agents/tool-definition"]
 same-as = ["https://rollingedition.com/concepts/ai-agents/tool-annotation"]
 
 [[concepts]]
@@ -377,6 +382,9 @@ definition = "Progress is MCP's answer to a long call: the server reports how fa
 section = "stream-progress"
 example = "progress-on-stock-recount"
 
+[concepts.relations]
+part-of = ["core-protocol"]
+
 [[concepts]]
 id = "sticky-sessions"
 term = "sticky sessions"
@@ -390,6 +398,7 @@ id = "dns-rebinding"
 term = "DNS rebinding"
 definition = "With DNS rebinding, an attacker's domain can be made to resolve to 127.0.0.1 after the page loads, so the browser treats the local server as part of the attacker's site."
 section = "validate-origin"
+wikidata = "Q5205813"
 example = "reject-a-foreign-origin"
 
 # Chapter 07
@@ -422,6 +431,9 @@ context = "model-context-protocol"
 definition = "a task: the call's work, whose status the client asks for as often as the server suggests, and whose result waits on the server until the client fetches it"
 section = "tasks-and-extensions"
 example = "start-a-restock-report"
+
+[concepts.relations]
+contrasts-with = ["progress"]
 
 [[concepts]]
 id = "task-handle"
@@ -461,6 +473,9 @@ term = "core protocol"
 context = "model-context-protocol"
 definition = "The core protocol is what every client and server must implement."
 section = "negotiate-an-extension"
+
+[concepts.relations]
+contrasts-with = ["extension"]
 
 [[concepts]]
 id = "mcp-apps"
@@ -544,6 +559,7 @@ id = "trust-boundary"
 term = "trust boundary"
 definition = "A trust boundary is a place where data or authority passes from one party to another that shouldn't take it on faith."
 section = "trust-boundaries"
+wikidata = "Q7848145"
 
 [[concepts]]
 id = "token-passthrough"
@@ -557,6 +573,7 @@ id = "confused-deputy"
 term = "confused deputy"
 definition = "In the classic sense, a confused deputy is a program that holds authority of its own, takes a name from its caller, and uses its authority on that name where the caller had none."
 section = "confused-deputy"
+wikidata = "Q5160310"
 example = "confused-deputy-refund"
 
 [[concepts]]
