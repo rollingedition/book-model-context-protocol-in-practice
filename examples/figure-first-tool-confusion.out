@@ -1,0 +1,8 @@
+tickets scored: 48
+right first calls: 36
+wrong first calls: 12
+expected shop.quote_refund, called shop.get_order_status: 8
+expected shop.get_order_status, called partner.track_parcel: 2
+expected shop.quote_refund, called shop.find_orders: 2
+largest wrong cell: expected shop.quote_refund, called shop.get_order_status
+figure: figures/first-tool-confusion.svg
