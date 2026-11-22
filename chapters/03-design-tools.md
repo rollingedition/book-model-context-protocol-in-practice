@@ -23,7 +23,7 @@ This chapter rebuilds `shop-support` in `lib.shop_tools`, a shared module, so th
 - `find_orders` searches one customer's orders by status or by the date placed. It calls the API's order list and adds a date filter the API doesn't have.
 - `get_order_status` looks up one order by its ID, as in chapter 1.
 - `quote_refund` works out what a refund would be, and changes nothing.
-- `issue_refund` makes the refund from a quote. Above the policy's limit the shop's API holds it for a person ([Return an input request instead of a result](#return-an-input-request)); within the limit, nothing in this chapter asks anyone. **Consent** is the host asking the user before a call that changes something, and it arrives in [Ask for consent before side effects](#consent-before-side-effects).
+- `issue_refund` makes the refund from a quote. Above the policy's limit the shop's API holds it for a person ([Return an input request instead of a result](#return-an-input-request)); within the limit, nothing in this chapter asks anyone. **Consent** is the host asking the user before a call, especially one changing something, and it arrives in [Ask for consent before side effects](#consent-before-side-effects).
 - `check_stock` reports one product's stock in each warehouse.
 
 The module also holds `endpoint_tools()`, the list a one-tool-per-endpoint generator writes for the same API, so the two shapes can be compared. Both lists print with each tool's required arguments. Then ticket T-0024, "please refund the aluminium muffin tray on o2415", runs both ways.
@@ -92,7 +92,7 @@ The specification isn't consistent about where a rejected argument goes. Its too
 
 ## Return structured content with an output schema {#structured-output}
 
-The inputs from [the previous section](#type-tool-inputs) have a schema, and results can have one too. A tool may declare an `outputSchema`, and its result then carries `structuredContent`: the result's data as JSON that a program can read without parsing text ([tools](https://modelcontextprotocol.io/specification/2026-07-28/server/tools), "Structured content"). When a tool declares an output schema, the server "MUST" return results that conform to it, and clients "SHOULD" validate them. A tool that returns structured content "SHOULD" also return it serialized as JSON in a text block, for clients that read only text. The same section notes that `structuredContent` is the server's result data, unrelated to a model's "structured outputs".
+The inputs from [the previous section](#type-tool-inputs) have a schema, and results can have one too. A tool may declare an `outputSchema`, and its result may carry `structuredContent`: the result's data as JSON that a program can read without parsing text ([tools](https://modelcontextprotocol.io/specification/2026-07-28/server/tools), "Structured content"). When a tool declares an output schema, the server "MUST" return results that conform to it, and clients "SHOULD" validate them. A tool that returns structured content "SHOULD" also return it serialized as JSON in a text block, for clients that read only text. The same section notes that `structuredContent` is the server's result data, unrelated to a model's "structured outputs".
 
 The output schema serves the host's code more than the model. Code can branch on a field called `within_limit` instead of searching a sentence for "exceeds", and a test can check a field instead of a string. `structuredContent` may be any JSON value at the pinned revision ([changelog](https://modelcontextprotocol.io/specification/2026-07-28/changelog)). Revision 2025-11-25 required an object ([tools at 2025-11-25](https://modelcontextprotocol.io/specification/2025-11-25/server/tools)), which [Migrate a 2025-era server](#migrate-from-2025) covers.
 
@@ -136,12 +136,12 @@ One more mistake skips both paths: a tool that returns an error message as an or
 
 ## Mark what a tool changes with annotations {#tool-annotations}
 
-The errors in [the previous section](#tool-errors) tell the model what went wrong after a call. A tool's annotations tell the host what a call will do before it's made, so the host can decide whether to ask for consent first. The specification wants a person able to say no to any tool call, as [Let a model choose the tool](#let-a-model-choose) quoted. A tool's `annotations` hold a title and four hints ([schema](https://modelcontextprotocol.io/specification/2026-07-28/schema), `ToolAnnotations`):
+The errors in [the previous section](#tool-errors) tell the model what went wrong after a call. A tool's annotations hint to the host what a call will do before it's made, so the host can decide whether to ask for consent first. The specification wants a person able to say no to any tool call, as [Let a model choose the tool](#let-a-model-choose) quoted. A tool's `annotations` hold a title and four hints ([schema](https://modelcontextprotocol.io/specification/2026-07-28/schema), `ToolAnnotations`):
 
 - `readOnlyHint`: the tool doesn't change its environment. The default is false.
 - `destructiveHint`: a tool that changes something may destroy or overwrite data, rather than only add to it. The default is true.
 - `idempotentHint`: calling the tool again with the same arguments has no further effect. The default is false.
-- `openWorldHint`: the tool reaches entities outside a closed domain, such as the web. The default is true.
+- `openWorldHint`: the tool may reach entities outside a closed domain, such as the web. The default is true.
 
 `destructiveHint` and `idempotentHint` mean something only when `readOnlyHint` is false. The defaults describe the worst case, so to a careful host a tool with no annotations is destructive, not idempotent, and reaches the open world. Annotations go into the Python SDK as `ToolAnnotations(read_only_hint=..., destructive_hint=..., idempotent_hint=..., open_world_hint=...)` to the `tool()` decorator ([tools](https://py.sdk.modelcontextprotocol.io/v2/servers/tools/)).
 

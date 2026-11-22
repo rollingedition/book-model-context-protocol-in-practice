@@ -15,7 +15,7 @@ description = "Where a host, a client and a server are the roles the Model Conte
 id = "mcp-protocol"
 term = "Model Context Protocol"
 aliases = ["MCP"]
-definition = "The Model Context Protocol (MCP) is how an application that uses a model gets tools and data from programs it didn't write."
+definition = "The Model Context Protocol (MCP) is the standard way an application that uses a model gets tools and data from other programs."
 section = "mcp-end-to-end"
 wikidata = "Q133436854"
 example = "call-order-status"
@@ -53,7 +53,7 @@ broader = ["model-context-protocol/host"]
 [[concepts]]
 id = "host"
 term = "host"
-definition = "The host is the application the user works in."
+definition = "The host is the application the user works in, which uses a model."
 section = "host-client-server"
 context = "model-context-protocol"
 
@@ -74,7 +74,7 @@ same-as = ["https://rollingedition.com/concepts/ai-agents/mcp-client"]
 [[concepts]]
 id = "server"
 term = "server"
-definition = "A server exposes capabilities, such as tools, and knows nothing else about the host."
+definition = "A server exposes capabilities, such as tools, and knows only what the host's requests tell it."
 section = "host-client-server"
 context = "model-context-protocol"
 example = "list-what-the-server-offers"
@@ -132,7 +132,7 @@ contrasts-with = ["ai-agents/tool"]
 id = "prompt"
 term = "prompt"
 aliases = ["prompts", "MCP prompt"]
-definition = "A prompt is a template of messages, with arguments, that the server defines and the user picks"
+definition = "A prompt is a template of messages, with optional arguments, that the server defines and the user picks"
 section = "prompts-user-chooses"
 context = "model-context-protocol"
 example = "three-primitives-side-by-side"
@@ -160,7 +160,7 @@ example = "cache-the-tool-list"
 [[concepts]]
 id = "consent"
 term = "consent"
-definition = "Consent is the host asking the user before a call that changes something"
+definition = "Consent is the host asking the user before a call, especially one changing something"
 section = "tasks-not-endpoints"
 context = "ai-agents"
 example = "annotate-the-refund-tool"
@@ -203,7 +203,7 @@ contrasts-with = ["protocol-error"]
 id = "tool-annotation"
 term = "tool annotation"
 aliases = ["tool annotations", "ToolAnnotations"]
-definition = "A tool's annotations tell the host what a call will do before it's made"
+definition = "A tool's annotations hint to the host what a call will do before it's made"
 section = "tool-annotations"
 context = "model-context-protocol"
 example = "annotate-the-refund-tool"
@@ -216,7 +216,7 @@ same-as = ["https://rollingedition.com/concepts/ai-agents/tool-annotation"]
 id = "read-only-hint"
 term = "readOnlyHint"
 aliases = ["read-only hint"]
-definition = "the tool doesn't change its environment"
+definition = "`readOnlyHint`: the tool doesn't change its environment"
 section = "tool-annotations"
 context = "model-context-protocol"
 example = "annotate-the-refund-tool"
@@ -228,7 +228,7 @@ part-of = ["tool-annotation"]
 id = "destructive-hint"
 term = "destructiveHint"
 aliases = ["destructive hint"]
-definition = "a tool that changes something may destroy or overwrite data, rather than only add to it"
+definition = "`destructiveHint`: a tool that changes something may destroy or overwrite data, rather than only add to it"
 section = "tool-annotations"
 context = "model-context-protocol"
 example = "annotate-the-refund-tool"
@@ -240,7 +240,7 @@ part-of = ["tool-annotation"]
 id = "idempotent-hint"
 term = "idempotentHint"
 aliases = ["idempotent hint"]
-definition = "calling the tool again with the same arguments has no further effect"
+definition = "`idempotentHint`: calling the tool again with the same arguments has no further effect"
 section = "tool-annotations"
 context = "model-context-protocol"
 example = "annotate-the-refund-tool"
@@ -252,7 +252,7 @@ part-of = ["tool-annotation"]
 id = "open-world-hint"
 term = "openWorldHint"
 aliases = ["open world hint"]
-definition = "the tool reaches entities outside a closed domain, such as the web"
+definition = "`openWorldHint`: the tool may reach entities outside a closed domain, such as the web"
 section = "tool-annotations"
 context = "model-context-protocol"
 example = "annotate-the-refund-tool"
@@ -295,7 +295,7 @@ example = "order-resource-template"
 id = "argument-completion"
 term = "argument completion"
 context = "model-context-protocol"
-definition = "Argument completion lets the host ask the server for suggestions while the user types."
+definition = "Argument completion lets the host ask the server for suggestions for an argument of a prompt or a resource template while the user types."
 section = "argument-completion"
 example = "complete-order-ids"
 
@@ -305,7 +305,7 @@ example = "complete-order-ids"
 id = "elicitation"
 term = "elicitation"
 context = "model-context-protocol"
-definition = "elicitation: a structured question that a server sends and the client shows the user"
+definition = "elicitation: a request for input that a server sends and the client puts to the user"
 section = "multi-round-trip-requests"
 example = "elicit-a-refund-reason"
 
@@ -317,7 +317,7 @@ implemented-by = [{ to = "mcp", versions = ">=2.0" }]
 id = "multi-round-trip-request"
 term = "Multi Round-Trip Request"
 context = "model-context-protocol"
-definition = "a Multi Round-Trip Request, a pattern in which one call can end with a question instead of a result"
+definition = "a Multi Round-Trip Request, a pattern in which one call can end with a request for input instead of a result"
 section = "multi-round-trip-requests"
 example = "refund-asks-to-confirm"
 
@@ -328,7 +328,7 @@ implemented-by = [{ to = "mcp", versions = ">=2.0" }]
 id = "input-request"
 term = "input request"
 context = "model-context-protocol"
-definition = "The server answers the call with an input request instead of a result, and the client calls again with the answer."
+definition = "The server answers the call with input requests instead of a result, and the client calls again with the answers."
 section = "multi-round-trip-requests"
 example = "refund-asks-to-confirm"
 
@@ -347,7 +347,7 @@ broader = ["elicitation"]
 id = "url-mode"
 term = "URL mode"
 context = "model-context-protocol"
-definition = "In URL mode, the server sends the user to a web page, not a form"
+definition = "In URL mode, the user answers on a web page, outside the client"
 section = "elicitation-forms"
 example = "elicit-by-url"
 
@@ -369,7 +369,7 @@ id = "streamable-http"
 term = "Streamable HTTP"
 aliases = ["Streamable HTTP transport"]
 context = "model-context-protocol"
-definition = "For a server that many hosts share, the Model Context Protocol (MCP) defines a second transport, Streamable HTTP."
+definition = "The server listens at one HTTP endpoint, and each message a client sends is a POST of its own"
 section = "streamable-http"
 example = "serve-on-loopback"
 
@@ -378,12 +378,9 @@ id = "progress"
 term = "progress"
 aliases = ["notifications/progress"]
 context = "model-context-protocol"
-definition = "Progress is MCP's answer to a long call: the server reports how far it has got while the call runs"
+definition = "Progress is MCP's answer to a long call: when the client asks for it, the server reports how far it has got while the call runs"
 section = "stream-progress"
 example = "progress-on-stock-recount"
-
-[concepts.relations]
-part-of = ["core-protocol"]
 
 [[concepts]]
 id = "sticky-sessions"
@@ -396,7 +393,7 @@ example = "two-replicas-one-client"
 [[concepts]]
 id = "dns-rebinding"
 term = "DNS rebinding"
-definition = "With DNS rebinding, an attacker's domain can be made to resolve to 127.0.0.1 after the page loads, so the browser treats the local server as part of the attacker's site."
+definition = "With DNS rebinding, an attacker's domain can be made to resolve to 127.0.0.1, or another address only the victim's network reaches, after the page loads, so the browser treats the local server as part of the attacker's site."
 section = "validate-origin"
 wikidata = "Q5205813"
 example = "reject-a-foreign-origin"
@@ -417,7 +414,7 @@ implemented-by = [{ to = "mcp", versions = ">=2.0" }]
 id = "tasks-extension"
 term = "Tasks extension"
 context = "model-context-protocol"
-definition = "With the Tasks extension, the server answers the call at once with a handle to a task"
+definition = "With the Tasks extension, the server can answer the call at once with a handle to a task"
 section = "tasks-and-extensions"
 example = "start-a-restock-report"
 
@@ -428,7 +425,7 @@ broader = ["extension"]
 id = "task"
 term = "task"
 context = "model-context-protocol"
-definition = "a task: the call's work, whose status the client asks for as often as the server suggests, and whose result waits on the server until the client fetches it"
+definition = "a task: the call's work, whose status the client asks for as often as the server suggests, and whose result waits on the server until the client fetches it or its lifetime runs out"
 section = "tasks-and-extensions"
 example = "start-a-restock-report"
 
@@ -471,7 +468,7 @@ example = "declare-the-tasks-extension"
 id = "core-protocol"
 term = "core protocol"
 context = "model-context-protocol"
-definition = "The core protocol is what every client and server must implement."
+definition = "The core protocol is what the specification itself defines, with no extension."
 section = "negotiate-an-extension"
 
 [concepts.relations]
@@ -481,7 +478,7 @@ contrasts-with = ["extension"]
 id = "mcp-apps"
 term = "MCP Apps"
 context = "model-context-protocol"
-definition = "MCP Apps is an official extension that changes how a result is shown."
+definition = "MCP Apps is an official extension that shows a result as an interactive interface."
 section = "mcp-apps"
 
 [concepts.relations]
@@ -499,7 +496,7 @@ example = "discover-the-authorization-server"
 [[concepts]]
 id = "protected-resource-metadata"
 term = "Protected Resource Metadata"
-definition = "Protected Resource Metadata (RFC 9728), a JSON document that names the resource and lists at least one authorization server"
+definition = "Protected Resource Metadata (RFC 9728), a JSON document that names the resource and, for MCP, lists at least one authorization server"
 section = "protected-resource-metadata"
 example = "discover-the-authorization-server"
 
@@ -509,7 +506,7 @@ implemented-by = [{ to = "mcp", versions = ">=2.0" }]
 [[concepts]]
 id = "client-id-metadata-document"
 term = "Client ID Metadata Document"
-definition = "A Client ID Metadata Document makes the client ID a URL."
+definition = "A Client ID Metadata Document makes the client ID an `https://` URL at which the client publishes its own metadata."
 section = "client-id-metadata-documents"
 example = "publish-client-metadata"
 
@@ -530,7 +527,7 @@ implemented-by = [{ to = "mcp", versions = ">=2.0" }]
 [[concepts]]
 id = "access-token"
 term = "access token"
-definition = "An access token is a bearer credential, so whoever holds it can present it."
+definition = "In MCP, an access token is a bearer credential, so whoever holds it can present it."
 section = "token-audience"
 example = "wrong-audience-rejected"
 
@@ -538,7 +535,7 @@ example = "wrong-audience-rejected"
 id = "mix-up-attack"
 term = "mix-up attack"
 aliases = ["mix-up"]
-definition = "In a mix-up, an attacker's authorization server gets the host to start a flow with it, then sends the user's browser on to an honest authorization server."
+definition = "In a mix-up, an attacker's authorization server gets the host to start a flow with it, then sends the user's browser on to an honest authorization server, so that the host sends the honest server's code to the attacker."
 section = "validate-the-issuer"
 example = "mix-up-attack-blocked"
 
@@ -564,7 +561,7 @@ wikidata = "Q7848145"
 [[concepts]]
 id = "token-passthrough"
 term = "token passthrough"
-definition = "a server either accepts a token that was issued to someone else or forwards the token it received to the API behind it"
+definition = "a server accepts a token without checking that it was issued to that server, and forwards it to the API behind it"
 section = "no-token-passthrough"
 example = "token-passthrough-rejected"
 
@@ -580,7 +577,7 @@ example = "confused-deputy-refund"
 id = "tool-definition"
 term = "tool definition"
 context = "ai-agents"
-definition = "A tool's definition is text from its server that the host passes to the model: its description, input schema and annotations."
+definition = "A tool's definition is its server's text that the host passes to the model: its name, description, input schema and annotations."
 section = "tool-poisoning"
 example = "poisoned-description"
 
@@ -624,14 +621,14 @@ section = "tool-poisoning"
 id = "capability-laundering"
 term = "capability laundering"
 context = "ai-agents"
-definition = "Capability laundering is hiding what a tool's code can do behind a description that leaves it out"
+definition = "Capability laundering is dangerous behaviour in a tool's code that its description leaves out, whether by drift or by design"
 section = "trust-boundaries"
 
 [[concepts]]
 id = "indirect-prompt-injection"
 term = "indirect prompt injection"
 context = "large-language-models"
-definition = "Indirect prompt injection is the general name for data that carries instructions: text the application retrieves, here a customer's ticket, contains instructions that the model follows, and those instructions can decide which tools it calls"
+definition = "Indirect prompt injection is the general name for data that carries instructions: text the application retrieves, here a customer's ticket, contains instructions that the model may follow, and those instructions can decide which tools it calls"
 section = "untrusted-tool-output"
 example = "ticket-injection"
 agrees = [{ book = "agent-harnesses", definition = "The threat is indirect prompt injection: text that an application retrieves from outside can carry instructions, and a model that reads that text may follow them." }]
@@ -642,7 +639,7 @@ agrees = [{ book = "agent-harnesses", definition = "The threat is indirect promp
 id = "era"
 term = "era"
 context = "model-context-protocol"
-definition = "A client still learns its server's era: the pinned revision or a 2025 one."
+definition = "A client still learns its server's era: the pinned revision's, or legacy, the `initialize`-based revisions up to 2025-11-25."
 section = "one-client-per-server"
 example = "connect-two-servers"
 
@@ -658,7 +655,7 @@ example = "attach-a-policy-resource"
 id = "progressive-discovery"
 term = "progressive discovery"
 context = "ai-agents"
-definition = "progressive discovery, a small search tool that returns definitions on demand"
+definition = "progressive discovery, which gives the model a small search tool and loads definitions on demand"
 section = "build-a-host-in-production"
 
 # Chapter 11
@@ -666,7 +663,7 @@ section = "build-a-host-in-production"
 [[concepts]]
 id = "span"
 term = "span"
-definition = "an application creates spans, each a named, timed operation with attributes and a parent"
+definition = "an application creates spans, each a named, timed operation with attributes and, unless it starts a trace, a parent"
 section = "trace-with-opentelemetry"
 example = "trace-a-tool-call"
 
@@ -693,6 +690,6 @@ example = "scan-a-2025-server"
 id = "dual-era"
 term = "dual-era"
 context = "model-context-protocol"
-definition = "a dual-era server, which serves both eras on the same endpoint"
+definition = "a dual-era server, which serves both eras, on the same endpoint or in the same process"
 section = "serve-both-revisions"
 example = "serve-two-revisions"
