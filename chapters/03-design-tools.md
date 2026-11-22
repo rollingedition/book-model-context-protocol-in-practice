@@ -23,7 +23,7 @@ This chapter rebuilds `shop-support` in `lib.shop_tools`, a shared module, so th
 - `find_orders` searches one customer's orders by status or by the date placed. It calls the API's order list and adds a date filter the API doesn't have.
 - `get_order_status` looks up one order by its ID, as in chapter 1.
 - `quote_refund` works out what a refund would be, and changes nothing.
-- `issue_refund` makes the refund from a quote. Above the policy's limit the shop's API holds it for a person ([Return an input request instead of a result](#return-an-input-request)); within the limit, nothing in this chapter asks anyone. **Consent** is the host asking the user before a call that changes something, and it arrives in [Ask for consent before side effects](#consent-before-side-effects).
+- `issue_refund` makes the refund from a quote. Above the policy's limit the shop's API holds it for a person ([Return an input request instead of a result](#return-an-input-request)); within the limit, nothing in this chapter asks anyone. **Consent** is the host asking the user before a call, especially one changing something, and it arrives in [Ask for consent before side effects](#consent-before-side-effects).
 - `check_stock` reports one product's stock in each warehouse.
 
 The module also holds `endpoint_tools()`, the list a one-tool-per-endpoint generator writes for the same API, so the two shapes can be compared. Both lists print with each tool's required arguments. Then ticket T-0024, "please refund the aluminium muffin tray on o2415", runs both ways.
@@ -136,12 +136,12 @@ One more mistake skips both paths: a tool that returns an error message as an or
 
 ## Mark what a tool changes with annotations {#tool-annotations}
 
-The errors in [the previous section](#tool-errors) tell the model what went wrong after a call. A tool's annotations tell the host what a call will do before it's made, so the host can decide whether to ask for consent first. The specification wants a person able to say no to any tool call, as [Let a model choose the tool](#let-a-model-choose) quoted. A tool's `annotations` hold a title and four hints ([schema](https://modelcontextprotocol.io/specification/2026-07-28/schema), `ToolAnnotations`):
+The errors in [the previous section](#tool-errors) tell the model what went wrong after a call. A tool's annotations hint to the host what a call will do before it's made, so the host can decide whether to ask for consent first. The specification wants a person able to say no to any tool call, as [Let a model choose the tool](#let-a-model-choose) quoted. A tool's `annotations` hold a title and four hints ([schema](https://modelcontextprotocol.io/specification/2026-07-28/schema), `ToolAnnotations`):
 
 - `readOnlyHint`: the tool doesn't change its environment. The default is false.
 - `destructiveHint`: a tool that changes something may destroy or overwrite data, rather than only add to it. The default is true.
 - `idempotentHint`: calling the tool again with the same arguments has no further effect. The default is false.
-- `openWorldHint`: the tool reaches entities outside a closed domain, such as the web. The default is true.
+- `openWorldHint`: the tool may reach entities outside a closed domain, such as the web. The default is true.
 
 `destructiveHint` and `idempotentHint` mean something only when `readOnlyHint` is false. The defaults describe the worst case, so to a careful host a tool with no annotations is destructive, not idempotent, and reaches the open world. Annotations go into the Python SDK as `ToolAnnotations(read_only_hint=..., destructive_hint=..., idempotent_hint=..., open_world_hint=...)` to the `tool()` decorator ([tools](https://py.sdk.modelcontextprotocol.io/v2/servers/tools/)).
 
@@ -173,7 +173,13 @@ The cost is easier to measure than to guess. When the recording script ran, it a
 
 Most of the cost is in the schemas. The shop's five revised tools take {{out:tool-list-size:revised prompt tokens}} tokens in the prompt, against {{out:tool-list-size:prompt without tools tokens}} for the rest of the host's instructions. With vague descriptions they take {{out:tool-list-size:vague prompt tokens}}, so the revised descriptions make up about a third of the list's cost. The endpoint tools take {{out:tool-list-size:endpoint prompt tokens}}: one-line descriptions, and schemas with no patterns, enums or descriptions of their own. The revised schemas are the same ones that caught the bad arguments in [Type inputs with JSON Schema](#type-tool-inputs). The full `tools/list` result is larger still, because it also carries output schemas, titles and annotations that the host's prompt leaves out, as the output's byte counts show.
 
-At about {{out:tool-list-size:revised tokens per tool}} tokens a tool, 20 tools like these would take about {{out:tool-list-size:20 such tools tokens}} tokens before the model reads the ticket: nearly all of the {{out:tool-list-size:recording context tokens}}-token context the recordings run with. That figure is arithmetic, not a measurement, and real tools vary in size. A shorter list also lowers the chance that two descriptions overlap, which was the draft's problem with `get_order_status` and `quote_refund` ([Write descriptions the model reads](#write-tool-descriptions)).
+![The revised tool list and the host's instructions fill well under half of the recording's context, and no one tool dominates](../examples/figures/tool-list-tokens.svg "Tokens each set of tools takes in the host's prompt, against the recording's context")
+
+[Each set's tokens, tool by tool](../examples/figure-tool-list-tokens.py)
+
+{{fig:tool-list-tokens}} draws each set, instructions hatched, against the context line: the revised list fills {{out:figure-tool-list-tokens:revised with instructions share of context}} of it, each tool {{out:figure-tool-list-tokens:smallest revised tool tokens}} to {{out:figure-tool-list-tokens:largest revised tool tokens}} tokens.
+
+At about {{out:tool-list-size:revised tokens per tool}} tokens a tool, 20 tools like these would take about {{out:tool-list-size:20 such tools tokens}} tokens before the model reads the ticket: nearly all of the {{out:tool-list-size:recording context tokens}}-token context the recordings run with. That number is arithmetic, not a measurement, and real tools vary in size. A shorter list also lowers the chance that two descriptions overlap, which was the draft's problem with `get_order_status` and `quote_refund` ([Write descriptions the model reads](#write-tool-descriptions)).
 
 A server keeps its list short by serving one audience. The shop's server serves support tickets, so the stock recount isn't on it. At the pinned revision a server can't trim its list for one connection, though the list may vary by the authorization a request presents, and it comes in a fixed order ([Cache list results](#cache-list-results)). That section covers the cache hints on the result, and [Scope tools by what the token allows](#scopes-per-tool) shows a list that varies by token.
 

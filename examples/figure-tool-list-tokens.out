@@ -1,0 +1,8 @@
+endpoint prompt tokens with instructions: 424
+vague prompt tokens with instructions: 756
+revised prompt tokens with instructions: 1106
+smallest revised tool tokens: 127
+largest revised tool tokens: 271
+context tokens: 4096
+revised with instructions share of context: 27.0%
+figure: figures/tool-list-tokens.svg
