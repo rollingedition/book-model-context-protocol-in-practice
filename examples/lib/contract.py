@@ -20,6 +20,9 @@ models, and reads `anyOf` with `null` as an optional value of the other type. It
 JSON Schema comparison: it doesn't compare patterns, bounds or enums, and a change it doesn't flag can still break a
 client. Pair it with a test that validates real results against the old schema (`jsonschema`, as the client does).
 
+`widened_inputs(old, new)` is the other half, for a reviewer: input changes that break no client but let the tool
+accept calls it refused before. Its docstring says what it lists and what it leaves out.
+
 `validator(schema)` is the `jsonschema` validator class for that test. A schema may name its dialect in `$schema`,
 and the base protocol says to validate by the declared dialect, or by JSON Schema 2020-12 when none is declared
 ("JSON Schema Usage"). So it picks the class from the schema, as the SDK's client does with `validator_for`
@@ -77,6 +80,64 @@ def breaking_changes(old, new) -> list[str]:
             problems.append(f"input {path}: {old_in[path][0]} became {kind}")
     problems += [f"input {path}: removed" for path in old_in if path not in new_in]
     return problems
+
+
+def _wider_bound(key: str, old: dict[str, Any], new: dict[str, Any]) -> str | None:
+    """How `new` relaxes the bound `key` of `old`, or None when it doesn't."""
+    if key not in old:
+        return None
+    if key not in new:
+        return f"{key} {old[key]} dropped"
+    looser = new[key] < old[key] if key == "minimum" else new[key] > old[key]
+    return f"{key} {old[key]} became {new[key]}" if looser else None
+
+
+def _values(schema: dict[str, Any]) -> list | None:
+    """The values `enum` or `const` admits, or None when neither restricts them."""
+    return [schema["const"]] if "const" in schema else schema.get("enum")
+
+
+def widened_inputs(old, new) -> list[str]:
+    """Input changes in `new`, a later release of the tool `old`, that let it accept calls `old` refused.
+
+    None of these breaks a client, so `breaking_changes` doesn't report them, but each widens what a caller, or a
+    model, can ask the tool to do. For each top-level argument it lists: a new argument; a required argument made
+    optional; an `enum` or `const` that admits more values, or is dropped; a `pattern` dropped or changed (it can't
+    tell a looser pattern from a stricter one, so a person reads it); a `maxLength` or `maximum` raised or dropped,
+    and a `minimum` lowered or dropped. For the arguments object, it lists a new or wider `additionalProperties`:
+    `false` made a schema or allowed, or a schema made allowed.
+
+    It leaves out: properties nested inside an argument, and array items; a type widened or made nullable;
+    `minLength`, `exclusiveMinimum`, `exclusiveMaximum`, `format`, `multipleOf` and the array and object bounds;
+    `oneOf`, `allOf`, `not` and the conditional keywords; one `additionalProperties` schema replaced by another; and
+    any change in what the tool does behind the same schema. A wider input isn't always more authority, so the list
+    is for a person to read, not a gate.
+    """
+    widened = []
+    old_in, new_in = old.input_schema or {}, new.input_schema or {}
+    old_args, new_args = old_in.get("properties", {}), new_in.get("properties", {})
+    old_required, new_required = set(old_in.get("required", [])), set(new_in.get("required", []))
+    for name, schema in new_args.items():
+        if name not in old_args:
+            widened.append(f"{name}: new, {'required' if name in new_required else 'optional'}")
+            continue
+        was, now = _resolve(old_args[name], old_in), _resolve(schema, new_in)
+        if name in old_required and name not in new_required:
+            widened.append(f"{name}: required became optional")
+        old_values, new_values = _values(was), _values(now)
+        if old_values is not None and new_values is None:
+            widened.append(f"{name}: enum dropped")
+        elif old_values is not None and (added := [v for v in new_values if v not in old_values]):
+            widened.append(f"{name}: admits {', '.join(map(str, added))}")
+        if "pattern" in was and was["pattern"] != now.get("pattern"):
+            widened.append(f"{name}: pattern {'changed' if 'pattern' in now else 'dropped'}")
+        widened += [f"{name}: {change}" for key in ("maxLength", "maximum", "minimum")
+                    if (change := _wider_bound(key, was, now))]
+    old_extra = old_in.get("additionalProperties", True)              # absent means any extra key is allowed
+    new_extra = new_in.get("additionalProperties", True)
+    if old_extra is not True and old_extra != new_extra and (new_extra is True or old_extra is False):
+        widened.append("additionalProperties: wider")
+    return widened
 
 
 def validator(schema: dict[str, Any]) -> type:
